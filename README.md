@@ -33,3 +33,19 @@ Example: `--exclude-emails %@bitexpert.%` will result in a query restricted with
 This command will also change every email-address for the customer (except exluded).
 The default is `customer_(ID)@example.com` with `(ID)` being actually replaced by the customer-entity-ID. If you provide a custom email-mask you must include `(ID)`.
 Example: `--email-mask foo_(ID)_bar@somefictional.org` will result in a query restricted with `WHERE email NOT LIKE '%@bitexpert.%'` thus NOT updating the password and meail-address all bitExpert accounts
+
+## Contribute
+
+Please feel free to fork and extend existing or add new features and send
+a pull request with your changes! To establish a consistent code quality,
+please provide unit tests for all your changes and adapt the documentation.
+
+## Want To Contribute?
+
+If you feel that you have something to share, then we’d love to have you.
+Check out [the contributing guide](CONTRIBUTING.md) to find out how, as
+well as what we expect from you.
+
+## License
+
+This plugin is released under the Apache 2.0 license.
