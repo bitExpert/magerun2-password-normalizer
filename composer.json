@@ -21,7 +21,8 @@
   },
   "require-dev": {
     "n98/magerun": "dev-master",
-    "magento/framework": "101.0.*"
+    "magento/framework": "101.0.*",
+    "magento/module-customer": "101.0.*"
   },
   "repositories": [
     {
