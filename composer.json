@@ -32,13 +32,8 @@
   ],
   "autoload": {
     "psr-0": {
-      "Bitexpert": "src/",
+      "BitExpert": "src/",
       "N98": "vendor/n98/magerun/src"
-    }
-  },
-  "autoload-dev": {
-    "psr-0": {
-      "N98": "vendor/n98/magerun/tests"
     }
   }
 }
