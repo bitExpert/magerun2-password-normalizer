@@ -2,7 +2,8 @@
   "name": "bitexpert/magerun2-password-normalizer",
   "description": "Plugin for netz98 Magerun2 to normalize all customer email addresses and passwords",
   "keywords": [
-    "n98-magerun2", "magerun2"
+    "n98-magerun2",
+    "magerun2"
   ],
   "minimum-stability": "dev",
   "prefer-stable": true,
@@ -14,15 +15,22 @@
       "email": "p.sander@bitexpert.de",
       "homepage": "http://www.bitexpert.de",
       "role": "Developer"
+    },
+    {
+      "name": "Stephan Hochdörfer",
+      "email": "S.Hochdoerfer@bitExpert.de",
+      "homepage": "http://www.bitExpert.de"
     }
   ],
   "require": {
     "php": ">=7.0"
   },
   "require-dev": {
-    "n98/magerun": "dev-master",
+    "n98/magerun2": "^2.3",
     "magento/framework": "101.0.*",
-    "magento/module-customer": "101.0.*"
+    "magento/module-customer": "101.0.*",
+    "phpunit/phpunit": "^6.5",
+    "squizlabs/php_codesniffer": "^3.2"
   },
   "repositories": [
     {
@@ -35,5 +43,14 @@
       "BitExpert": "src/",
       "N98": "vendor/n98/magerun/src"
     }
+  },
+  "scripts": {
+    "check": [
+      "@cs-check",
+      "@test"
+    ],
+    "cs-check": "./vendor/bin/phpcs --standard=PSR2 ./src ./tests",
+    "cs-fix": "vendor/bin/phpcbf",
+    "test": "vendor/bin/phpunit"
   }
 }
