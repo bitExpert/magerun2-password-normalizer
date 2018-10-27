@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the magerun2-password-normalizer package.
+ *
+ * (c) bitExpert AG
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace BitExpert\Magento\PasswordNormalizer\Command;
 
 use Magento\Customer\Model\ResourceModel\Customer\Collection as CustomerCollection;
@@ -10,10 +19,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class PasswordNormalizerCommand
- * @package BitExpert\Magento\PasswordNormalizer\Command
- */
 class PasswordNormalizerCommand extends AbstractMagentoCommand
 {
     const OPTION_PASSWORD = 'password';

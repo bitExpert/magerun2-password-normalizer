@@ -1,8 +1,8 @@
 {
   "name": "bitexpert/magerun2-password-normalizer",
-  "description": "Plugin for netz98 Magerun2 to normalizer all customer-email-addresses and passwords",
+  "description": "Plugin for netz98 Magerun2 to normalize all customer email addresses and passwords",
   "keywords": [
-    "magerun2"
+    "n98-magerun2", "magerun2"
   ],
   "minimum-stability": "dev",
   "prefer-stable": true,
