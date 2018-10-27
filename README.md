@@ -1,5 +1,5 @@
 # magerun2-password-normalizer
-[netz98 Magerun2](https://github.com/netz98/n98-magerun2) Plugin for normalizing all customer-email-addresses and passwords.
+[netz98 Magerun2](https://github.com/netz98/n98-magerun2) Plugin for normalizing all customer email addresses and passwords.
 
 ## Installation
 
@@ -7,7 +7,7 @@ The preferred way of installing `bitexpert/magerun2-password-normalizer` is thro
 Simply add `bitexpert/magerun2-password-normalizer` as a dev dependency:
 
 ```
-composer.phar require --dev bitexpert/magerun2-list-api-endpoints
+composer.phar require --dev bitexpert/magerun2-password-normalizer
 ```
 
 ## Usage
