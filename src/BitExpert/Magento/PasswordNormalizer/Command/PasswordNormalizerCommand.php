@@ -1,6 +1,6 @@
 <?php
 
-namespace Bitexpert\Magento\PasswordNormalizer\Command;
+namespace BitExpert\Magento\PasswordNormalizer\Command;
 
 use Magento\Customer\Model\ResourceModel\Customer\Collection as CustomerCollection;
 use Magento\Framework\App\ObjectManager;
@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class PasswordNormalizerCommand
- * @package Bitexpert\Magento\PasswordNormalizer\Command
+ * @package BitExpert\Magento\PasswordNormalizer\Command
  */
 class PasswordNormalizerCommand extends AbstractMagentoCommand
 {
