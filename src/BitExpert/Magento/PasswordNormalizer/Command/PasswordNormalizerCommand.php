@@ -41,13 +41,15 @@ class PasswordNormalizerCommand extends AbstractMagentoCommand
                 self::OPTION_EXCLUDE_EMAILS,
                 'x',
                 InputOption::VALUE_OPTIONAL,
-                'Exclude email-addresses from being update by appending "WHERE email NOT LIKE ..." (example: --exclude-emails %@bitexpert.%)'
+                'Exclude email-addresses from being update by appending "WHERE email NOT LIKE ..." '.
+                '(example: --exclude-emails %@bitexpert.%)'
             )
             ->addOption(
                 self::OPTION_EMAIL_MASK,
                 'm',
                 InputOption::VALUE_OPTIONAL,
-                'Define the email-mask that is used to normalize the addresses. Must contain ' . self::ID_PLACEHOLDER . '. Default: customer_' . self::ID_PLACEHOLDER . '@example.com',
+                'Define the email-mask that is used to normalize the addresses. Must contain ' . self::ID_PLACEHOLDER .
+                '. Default: customer_' . self::ID_PLACEHOLDER . '@example.com',
                 'customer_(ID)@example.com'
             );
     }
@@ -93,13 +95,13 @@ class PasswordNormalizerCommand extends AbstractMagentoCommand
         );
 
         // construct manual DB query, because magento2 is stupid and doesn't have good iterator or bulk-actions
-        $sql = sprintf("UPDATE customer_entity SET email = CONCAT('%s'), password_hash = '%s'",
+        $sql = sprintf(
+            "UPDATE customer_entity SET email = CONCAT('%s'), password_hash = '%s'",
             $mailMask,
             $passwordHash
         );
 
-        if (isset($excludedEmails))
-        {
+        if (isset($excludedEmails)) {
             $sql = sprintf(
                 "%s WHERE email NOT LIKE '%s'",
                 $sql,
@@ -109,7 +111,6 @@ class PasswordNormalizerCommand extends AbstractMagentoCommand
 
         $result = $connection->query($sql);
 
-        $output->writeln(sprintf('>>> %d users updated',$result->rowCount()));
-
+        $output->writeln(sprintf('>>> %d users updated', $result->rowCount()));
     }
 }
