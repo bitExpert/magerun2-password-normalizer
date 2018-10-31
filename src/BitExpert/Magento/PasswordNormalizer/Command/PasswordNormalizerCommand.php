@@ -66,12 +66,6 @@ class PasswordNormalizerCommand extends AbstractMagentoCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var \Magento\Framework\App\ResourceConnection $resource */
-        $resource = ObjectManager::getInstance()->get(\Magento\Framework\App\ResourceConnection::class);
-        /** @var \Magento\Framework\Encryption\EncryptorInterface $encryptor */
-        $encryptor = ObjectManager::getInstance()->get(\Magento\Framework\Encryption\EncryptorInterface::class);
-
-        // options
         $excludedEmails = $input->getOption(self::OPTION_EXCLUDE_EMAILS);
         $password = $input->getOption(self::OPTION_PASSWORD);
         $mailMask = $input->getOption(self::OPTION_EMAIL_MASK);
@@ -80,11 +74,14 @@ class PasswordNormalizerCommand extends AbstractMagentoCommand
         if (!isset($password)) {
             throw new LocalizedException(__('--password is a required option'));
         }
+
         if (!strpos($mailMask, self::ID_PLACEHOLDER)) {
             throw new LocalizedException(__('--email-mask must contain %1', self::ID_PLACEHOLDER));
         }
 
+        $resource = $this->getResource();
         $connection = $resource->getConnection();
+        $encryptor = $this->getEncryptor();
         $passwordHash = $encryptor->getHash($password, true);
 
         // convert the email-mask input to SQL
@@ -112,5 +109,27 @@ class PasswordNormalizerCommand extends AbstractMagentoCommand
         $result = $connection->query($sql);
 
         $output->writeln(sprintf('>>> %d users updated', $result->rowCount()));
+    }
+
+    /**
+     * Helper method to return the database connection.
+     *
+     * @return \Magento\Framework\App\ResourceConnection
+     */
+    protected function getResource(): \Magento\Framework\App\ResourceConnection
+    {
+        /** @var \Magento\Framework\App\ResourceConnection $resource */
+        return ObjectManager::getInstance()->get(\Magento\Framework\App\ResourceConnection::class);
+    }
+
+    /**
+     * Helper method to return the encryptor.
+     *
+     * @return \Magento\Framework\Encryption\EncryptorInterface
+     */
+    protected function getEncryptor(): \Magento\Framework\Encryption\EncryptorInterface
+    {
+        /** @var \Magento\Framework\Encryption\EncryptorInterface $encryptor */
+        return ObjectManager::getInstance()->get(\Magento\Framework\Encryption\EncryptorInterface::class);
     }
 }
