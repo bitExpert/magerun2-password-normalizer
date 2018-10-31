@@ -19,7 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class PasswordNormalizerCommand extends AbstractMagentoCommand
+class PasswordNormalizer extends AbstractMagentoCommand
 {
     const OPTION_PASSWORD = 'password';
     const OPTION_EXCLUDE_EMAILS = 'exclude-emails';

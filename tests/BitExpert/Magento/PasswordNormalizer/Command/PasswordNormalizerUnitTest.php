@@ -21,7 +21,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Zend_Db_Statement_Interface;
 
-class PasswordNormalizerCommandUnitTest extends TestCase
+class PasswordNormalizerUnitTest extends TestCase
 {
     /**
      * @var InputInterface
@@ -79,7 +79,7 @@ class PasswordNormalizerCommandUnitTest extends TestCase
     {
         self::expectException(LocalizedException::class);
 
-        /** @var PasswordNormalizerCommand $command */
+        /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();
         $command->setApplication($this->application);
         $command->run($this->input, $this->output);
@@ -94,9 +94,9 @@ class PasswordNormalizerCommandUnitTest extends TestCase
             ->method('getOption')
             ->will(
                 $this->returnValueMap([
-                    [PasswordNormalizerCommand::OPTION_PASSWORD, 'random-password-to-set'],
-                    [PasswordNormalizerCommand::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
-                    [PasswordNormalizerCommand::OPTION_EXCLUDE_EMAILS, ''],
+                    [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
+                    [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
+                    [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
                 ])
             );
 
@@ -109,7 +109,7 @@ class PasswordNormalizerCommandUnitTest extends TestCase
         $this->output->expects($this->exactly(1))
             ->method('writeln');
 
-        /** @var PasswordNormalizerCommand $command */
+        /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();
         $command->setApplication($this->application);
         $command->run($this->input, $this->output);
@@ -124,9 +124,9 @@ class PasswordNormalizerCommandUnitTest extends TestCase
             ->method('getOption')
             ->will(
                 $this->returnValueMap([
-                    [PasswordNormalizerCommand::OPTION_PASSWORD, 'random-password-to-set'],
-                    [PasswordNormalizerCommand::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
-                    [PasswordNormalizerCommand::OPTION_EXCLUDE_EMAILS, ''],
+                    [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
+                    [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
+                    [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
                 ])
             );
 
@@ -147,7 +147,7 @@ class PasswordNormalizerCommandUnitTest extends TestCase
             )
             ->willReturn($this->statement);
 
-        /** @var PasswordNormalizerCommand $command */
+        /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();
         $command->setApplication($this->application);
         $command->run($this->input, $this->output);
@@ -164,13 +164,13 @@ class PasswordNormalizerCommandUnitTest extends TestCase
             ->method('getOption')
             ->will(
                 $this->returnValueMap([
-                    [PasswordNormalizerCommand::OPTION_PASSWORD, ''],
-                    [PasswordNormalizerCommand::OPTION_EMAIL_MASK, 'some-mask-without-placeholder'],
-                    [PasswordNormalizerCommand::OPTION_EXCLUDE_EMAILS, ''],
+                    [PasswordNormalizer::OPTION_PASSWORD, ''],
+                    [PasswordNormalizer::OPTION_EMAIL_MASK, 'some-mask-without-placeholder'],
+                    [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
                 ])
             );
 
-        /** @var PasswordNormalizerCommand $command */
+        /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();
         $command->setApplication($this->application);
         $command->run($this->input, $this->output);
@@ -185,9 +185,9 @@ class PasswordNormalizerCommandUnitTest extends TestCase
             ->method('getOption')
             ->will(
                 $this->returnValueMap([
-                    [PasswordNormalizerCommand::OPTION_PASSWORD, 'random-password-to-set'],
-                    [PasswordNormalizerCommand::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
-                    [PasswordNormalizerCommand::OPTION_EXCLUDE_EMAILS, 'bitexpert.de'],
+                    [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
+                    [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
+                    [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, 'bitexpert.de'],
                 ])
             );
 
@@ -209,7 +209,7 @@ class PasswordNormalizerCommandUnitTest extends TestCase
             )
             ->willReturn($this->statement);
 
-        /** @var PasswordNormalizerCommand $command */
+        /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();
         $command->setApplication($this->application);
         $command->run($this->input, $this->output);
@@ -217,13 +217,13 @@ class PasswordNormalizerCommandUnitTest extends TestCase
 
     /**
      * Helper method to configure a mocked version of
-     * {@link \BitExpert\Magento\PasswordNormalizer\Command\PasswordNormalizerCommand}.
+     * {@link \BitExpert\Magento\PasswordNormalizer\Command\PasswordNormalizer}.
      *
-     * @return PasswordNormalizerCommand|\PHPUnit\Framework\MockObject\MockObject
+     * @return PasswordNormalizer|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getPasswordNormalizerMock()
     {
-        $command = $this->getMockBuilder(PasswordNormalizerCommand::class)
+        $command = $this->getMockBuilder(PasswordNormalizer::class)
             ->disableOriginalClone()
             ->disableArgumentCloning()
             ->disallowMockingUnknownTypes()

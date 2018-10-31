@@ -3,4 +3,4 @@ autoloaders:
 
 commands:
   customCommands:
-    - BitExpert\Magento\PasswordNormalizer\Command\PasswordNormalizerCommand
+    - BitExpert\Magento\PasswordNormalizer\Command\PasswordNormalizer
