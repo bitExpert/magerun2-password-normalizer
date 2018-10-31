@@ -39,9 +39,13 @@
     }
   ],
   "autoload": {
-    "psr-0": {
-      "BitExpert": "src/",
-      "N98": "vendor/n98/magerun/src"
+    "psr-4": {
+      "BitExpert\\Magento\\PasswordNormalizer\\": "src/BitExpert/Magento/PasswordNormalizer"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "BitExpert\\Magento\\PasswordNormalizer\\": "tests/BitExpert/Magento/PasswordNormalizer"
     }
   },
   "scripts": {
