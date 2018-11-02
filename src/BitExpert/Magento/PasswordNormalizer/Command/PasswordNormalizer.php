@@ -66,6 +66,11 @@ class PasswordNormalizer extends AbstractMagentoCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // check environment
+        if (\Magento\Framework\App\State::MODE_DEVELOPER !== $this->getState()->getMode()) {
+            throw new LocalizedException(__('This command can only be run in developer mode!'));
+        }
+
         $excludedEmails = $input->getOption(self::OPTION_EXCLUDE_EMAILS);
         $password = $input->getOption(self::OPTION_PASSWORD);
         $mailMask = $input->getOption(self::OPTION_EMAIL_MASK);
@@ -78,6 +83,7 @@ class PasswordNormalizer extends AbstractMagentoCommand
         if (!strpos($mailMask, self::ID_PLACEHOLDER)) {
             throw new LocalizedException(__('--email-mask must contain %1', self::ID_PLACEHOLDER));
         }
+
 
         $resource = $this->getResource();
         $connection = $resource->getConnection();
@@ -118,7 +124,6 @@ class PasswordNormalizer extends AbstractMagentoCommand
      */
     protected function getResource(): \Magento\Framework\App\ResourceConnection
     {
-        /** @var \Magento\Framework\App\ResourceConnection $resource */
         return ObjectManager::getInstance()->get(\Magento\Framework\App\ResourceConnection::class);
     }
 
@@ -129,7 +134,16 @@ class PasswordNormalizer extends AbstractMagentoCommand
      */
     protected function getEncryptor(): \Magento\Framework\Encryption\EncryptorInterface
     {
-        /** @var \Magento\Framework\Encryption\EncryptorInterface $encryptor */
         return ObjectManager::getInstance()->get(\Magento\Framework\Encryption\EncryptorInterface::class);
+    }
+
+    /**
+     * Helper method to return the application State.
+     *
+     * @return \Magento\Framework\Encryption\EncryptorInterface
+     */
+    protected function getState(): \Magento\Framework\App\State
+    {
+        return ObjectManager::getInstance()->get(\Magento\Framework\App\State::class);
     }
 }
