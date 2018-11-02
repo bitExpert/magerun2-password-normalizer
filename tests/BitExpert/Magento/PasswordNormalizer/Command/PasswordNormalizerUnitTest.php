@@ -12,6 +12,7 @@
 namespace BitExpert\Magento\PasswordNormalizer\Command;
 
 use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\App\State;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -51,6 +52,10 @@ class PasswordNormalizerUnitTest extends TestCase
      * @var AdapterInterface
      */
     private $connection;
+    /**
+     * @var State
+     */
+    private $state;
 
     /**
      * {@inheritDoc}
@@ -70,6 +75,27 @@ class PasswordNormalizerUnitTest extends TestCase
             ->method('getConnection')
             ->willReturn($this->connection);
         $this->encryptor = $this->createMock(EncryptorInterface::class);
+        $this->state = $this->createMock(State::class);
+        $this->state->expects($this->any())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_DEVELOPER);
+    }
+
+    /**
+     * @test
+     */
+    public function commandCannotBeRunInProductionMode()
+    {
+        self::expectException(LocalizedException::class);
+
+        $this->state->expects($this->any())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_PRODUCTION);
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $command->run($this->input, $this->output);
     }
 
     /**
@@ -227,12 +253,14 @@ class PasswordNormalizerUnitTest extends TestCase
             ->disableOriginalClone()
             ->disableArgumentCloning()
             ->disallowMockingUnknownTypes()
-            ->setMethods(['getResource', 'getEncryptor'])
+            ->setMethods(['getResource', 'getEncryptor', 'getState'])
             ->getMock();
         $command->method('getResource')
             ->willReturn($this->resourceConnection);
         $command->method('getEncryptor')
             ->willReturn($this->encryptor);
+        $command->method('getState')
+            ->willReturn($this->state);
         return $command;
     }
 }
