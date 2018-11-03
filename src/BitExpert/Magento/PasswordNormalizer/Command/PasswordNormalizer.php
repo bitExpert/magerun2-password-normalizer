@@ -13,6 +13,9 @@ namespace BitExpert\Magento\PasswordNormalizer\Command;
 
 use Magento\Customer\Model\ResourceModel\Customer\Collection as CustomerCollection;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\App\State;
+use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Exception\LocalizedException;
 use N98\Magento\Command\AbstractMagentoCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -67,7 +70,7 @@ class PasswordNormalizer extends AbstractMagentoCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // check environment
-        if (\Magento\Framework\App\State::MODE_DEVELOPER !== $this->getState()->getMode()) {
+        if (State::MODE_DEVELOPER !== $this->getState()->getMode()) {
             throw new LocalizedException(__('This command can only be run in developer mode!'));
         }
 
@@ -120,30 +123,30 @@ class PasswordNormalizer extends AbstractMagentoCommand
     /**
      * Helper method to return the database connection.
      *
-     * @return \Magento\Framework\App\ResourceConnection
+     * @return ResourceConnection
      */
-    protected function getResource(): \Magento\Framework\App\ResourceConnection
+    protected function getResource(): ResourceConnection
     {
-        return ObjectManager::getInstance()->get(\Magento\Framework\App\ResourceConnection::class);
+        return ObjectManager::getInstance()->get(ResourceConnection::class);
     }
 
     /**
      * Helper method to return the encryptor.
      *
-     * @return \Magento\Framework\Encryption\EncryptorInterface
+     * @return EncryptorInterface
      */
-    protected function getEncryptor(): \Magento\Framework\Encryption\EncryptorInterface
+    protected function getEncryptor(): EncryptorInterface
     {
-        return ObjectManager::getInstance()->get(\Magento\Framework\Encryption\EncryptorInterface::class);
+        return ObjectManager::getInstance()->get(EncryptorInterface::class);
     }
 
     /**
      * Helper method to return the application State.
      *
-     * @return \Magento\Framework\Encryption\EncryptorInterface
+     * @return State
      */
-    protected function getState(): \Magento\Framework\App\State
+    protected function getState(): State
     {
-        return ObjectManager::getInstance()->get(\Magento\Framework\App\State::class);
+        return ObjectManager::getInstance()->get(State::class);
     }
 }
