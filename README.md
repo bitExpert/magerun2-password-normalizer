@@ -1,4 +1,7 @@
 # magerun2-password-normalizer
+
+[![Build Status](https://travis-ci.org/bitExpert/magerun2-password-normalizer.svg?branch=master)](https://travis-ci.org/bitExpert/magerun2-password-normalizer)
+
 [netz98 Magerun2](https://github.com/netz98/n98-magerun2) Plugin for normalizing all customer email addresses and passwords.
 
 ## Installation
