@@ -26,13 +26,13 @@ You will not be able to recover the old data, unlees you backed them up.
 
 ### You can provide an exclude-parameter that will not update the users that match the query.
 
-Example: `--exclude-emails %@bitexpert.%` will result in a query restricted with `WHERE email NOT LIKE '%@bitexpert.%'` thus NOT updating the password and meail-address all bitExpert accounts
+Example: `--exclude-emails %@bitexpert.%` will result in a query restricted with `WHERE email NOT LIKE '%@bitexpert.%'` thus NOT updating the password and email-address all bitExpert accounts
 
 ### You can provide an email-mask
 
 This command will also change every email-address for the customer (except exluded).
 The default is `customer_(ID)@example.com` with `(ID)` being actually replaced by the customer-entity-ID. If you provide a custom email-mask you must include `(ID)`.
-Example: `--email-mask foo_(ID)_bar@somefictional.org` will result in a query restricted with `WHERE email NOT LIKE '%@bitexpert.%'` thus NOT updating the password and meail-address all bitExpert accounts
+Example: `--email-mask foo_(ID)_bar@somefictional.org` will result in a query restricted with `WHERE email NOT LIKE '%@bitexpert.%'` thus NOT updating the password and email-address all bitExpert accounts
 
 ## Contribute
 
