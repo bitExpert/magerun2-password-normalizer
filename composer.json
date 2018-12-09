@@ -5,7 +5,6 @@
     "n98-magerun2",
     "magerun2"
   ],
-  "minimum-stability": "dev",
   "prefer-stable": true,
   "homepage": "https://github.com/bitexpert/magerun2-password-normalizer",
   "license": "Apache-2.0",
