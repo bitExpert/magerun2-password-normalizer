@@ -6,6 +6,18 @@
 
 ## Installation
 
+### For your OS-user
+
+n98-magerun2 will automatically load the plugins laying under `~/.n98-magerun2/modules` (create this folder if it does not exist). 
+
+To add this command, simply clone the repository.
+
+```
+git clone git@github.com:bitExpert/magerun2-password-normalizer.git ~/.n98-magerun2/modules/magerun2-password-normalizer
+```
+
+### For specific projects
+
 The preferred way of installing `bitexpert/magerun2-password-normalizer` is through Composer.
 Simply add `bitexpert/magerun2-password-normalizer` as a dev dependency:
 
