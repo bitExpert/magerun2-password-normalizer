@@ -1,5 +1,5 @@
 autoloaders:
-  BitExpert: %module%/src
+  BitExpert\Magento\PasswordNormalizer: %module%/src
 
 commands:
   customCommands:
