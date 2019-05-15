@@ -27,6 +27,7 @@ class PasswordNormalizer extends AbstractMagentoCommand
     const OPTION_PASSWORD = 'password';
     const OPTION_EXCLUDE_EMAILS = 'exclude-emails';
     const OPTION_EMAIL_MASK = 'email-mask';
+    const OPTION_FORCE = 'force';
     const ID_PLACEHOLDER = '(ID)';
 
     protected function configure()
@@ -54,6 +55,12 @@ class PasswordNormalizer extends AbstractMagentoCommand
                 'Define the email-mask that is used to normalize the addresses. Must contain ' . self::ID_PLACEHOLDER .
                 '. Default: customer_' . self::ID_PLACEHOLDER . '@example.com',
                 'customer_(ID)@example.com'
+            )
+            ->addOption(
+                self::OPTION_FORCE,
+                'f',
+                InputOption::VALUE_NONE,
+                'Performs actions even if the mode is not developer - USE WITH CAUTION!!!'
             );
     }
 
@@ -70,7 +77,8 @@ class PasswordNormalizer extends AbstractMagentoCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // check environment
-        if (State::MODE_DEVELOPER !== $this->getState()->getMode()) {
+        $force = $input->getOption(self::OPTION_FORCE);
+        if (!($force || State::MODE_DEVELOPER == $this->getState()->getMode())) {
             throw new LocalizedException(__('This command can only be run in developer mode!'));
         }
 
