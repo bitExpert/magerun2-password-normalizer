@@ -101,6 +101,23 @@ class PasswordNormalizerUnitTest extends TestCase
     /**
      * @test
      */
+    public function commandCannotBeRunInDefaultMode()
+    {
+        self::expectException(LocalizedException::class);
+
+        $this->state->expects($this->any())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_DEFAULT);
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $command->run($this->input, $this->output);
+    }
+
+    /**
+     * @test
+     */
     public function missingPasswordParameterThrowsException()
     {
         self::expectException(LocalizedException::class);
@@ -234,6 +251,66 @@ class PasswordNormalizerUnitTest extends TestCase
                 })
             )
             ->willReturn($this->statement);
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $command->run($this->input, $this->output);
+    }
+
+    /**
+     * @test
+     */
+    public function passingForceParameterBypassModeCheck()
+    {
+        $this->input->expects($this->any())
+            ->method('getOption')
+            ->will(
+                $this->returnValueMap([
+                    [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
+                    [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
+                    [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, 'bitexpert.de'],
+                    [PasswordNormalizer::OPTION_FORCE, true]
+                ])
+            );
+
+        $this->state->expects($this->never())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_PRODUCTION);
+
+        $this->connection->expects($this->any())
+            ->method('query')
+            ->willReturn($this->statement);
+
+        // when everything is working fine, writeln() will be the last operation of the command. Thus, if the method
+        // is called we can assume that the execution went well.
+        $this->output->expects($this->exactly(1))
+            ->method('writeln');
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $command->run($this->input, $this->output);
+    }
+
+    /**
+     * @test
+     */
+    public function missingForceParameterBypassModeCheck()
+    {
+        self::expectException(LocalizedException::class);
+
+        $this->input->expects($this->any())
+        ->method('getOption')
+        ->will(
+            $this->returnValueMap([
+                [PasswordNormalizer::OPTION_FORCE, false]
+            ])
+        );
+
+        $this->state->expects($this->any())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_PRODUCTION);
 
         /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();
