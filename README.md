@@ -31,6 +31,8 @@ This plugin adds the `dev:customer:normalize-passwords` command to magerun2.
 
 **It is designed to be executed only on development- or test-systems!**
 
+You must add --force when you're not in "developer" mode
+
 **You should never execute this on a production-system!**
 
 You will not be able to recover the old data, unlees you backed them up.
