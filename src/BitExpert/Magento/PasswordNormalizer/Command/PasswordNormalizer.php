@@ -45,8 +45,9 @@ class PasswordNormalizer extends AbstractMagentoCommand
                 self::OPTION_EXCLUDE_EMAILS,
                 'x',
                 InputOption::VALUE_OPTIONAL,
-                'Exclude email-addresses from being update by appending "WHERE email NOT LIKE ..." '.
-                '(example: --exclude-emails %@bitexpert.%)'
+                'Exclude email-addresses from being update by appending "WHERE email NOT LIKE ..."'.
+                '(example: --exclude-emails %@bitexpert.%)' . PHP_EOL .
+                '; separates multiple conditions (example: --exclude-emails %@bitexpert.%;%@gmail%)'
             )
             ->addOption(
                 self::OPTION_EMAIL_MASK,
@@ -116,10 +117,12 @@ class PasswordNormalizer extends AbstractMagentoCommand
         );
 
         if (isset($excludedEmails)) {
+            $excludedEmailsArr = explode(';', $excludedEmails);
+            $concated = implode("' AND email NOT LIKE '", $excludedEmailsArr);
             $sql = sprintf(
                 "%s WHERE email NOT LIKE '%s'",
                 $sql,
-                $excludedEmails
+                $concated
             );
         }
 
