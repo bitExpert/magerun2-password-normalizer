@@ -96,12 +96,28 @@ class PasswordNormalizer extends AbstractMagentoCommand
             throw new LocalizedException(__('--email-mask must contain %1', self::ID_PLACEHOLDER));
         }
 
-
         $resource = $this->getResource();
         $connection = $resource->getConnection();
         $encryptor = $this->getEncryptor();
         $passwordHash = $encryptor->getHash($password, true);
 
+        $sql = $this->buildSql($mailMask, $passwordHash);
+        $sql = $this->appendSqlWhereClause($sql, $excludedEmails);
+
+        $result = $connection->query($sql);
+
+        $output->writeln(sprintf('>>> %d users updated', $result->rowCount()));
+    }
+
+    /**
+     * construct manual DB query, because magento2 is stupid and doesn't have good iterator or bulk-actions
+     *
+     * @param $mailMask
+     * @param $passwordHash
+     * @return string
+     */
+    protected function buildSql($mailMask, $passwordHash)
+    {
         // convert the email-mask input to SQL
         $mailMask = str_replace(
             self::ID_PLACEHOLDER,
@@ -109,13 +125,24 @@ class PasswordNormalizer extends AbstractMagentoCommand
             $mailMask
         );
 
-        // construct manual DB query, because magento2 is stupid and doesn't have good iterator or bulk-actions
         $sql = sprintf(
             "UPDATE customer_entity SET email = CONCAT('%s'), password_hash = '%s'",
             $mailMask,
             $passwordHash
         );
 
+        return $sql;
+    }
+
+    /**
+     * Appends the where clauses to the SQL based on the $excludedEmails
+     *
+     * @param $sql
+     * @param $excludedEmails
+     * @return string
+     */
+    protected function appendSqlWhereClause($sql, $excludedEmails)
+    {
         if (isset($excludedEmails)) {
             $excludedEmailsArr = explode(';', $excludedEmails);
             $concated = implode("' AND email NOT LIKE '", $excludedEmailsArr);
@@ -126,9 +153,7 @@ class PasswordNormalizer extends AbstractMagentoCommand
             );
         }
 
-        $result = $connection->query($sql);
-
-        $output->writeln(sprintf('>>> %d users updated', $result->rowCount()));
+        return $sql;
     }
 
     /**
