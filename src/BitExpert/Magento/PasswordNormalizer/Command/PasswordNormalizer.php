@@ -116,7 +116,7 @@ class PasswordNormalizer extends AbstractMagentoCommand
      * @param $passwordHash
      * @return string
      */
-    protected function buildSql($mailMask, $passwordHash)
+    public function buildSql($mailMask, $passwordHash)
     {
         // convert the email-mask input to SQL
         $mailMask = str_replace(
@@ -141,9 +141,9 @@ class PasswordNormalizer extends AbstractMagentoCommand
      * @param $excludedEmails
      * @return string
      */
-    protected function appendSqlWhereClause($sql, $excludedEmails)
+    public function appendSqlWhereClause($sql, $excludedEmails)
     {
-        if (isset($excludedEmails)) {
+        if (isset($excludedEmails) && !empty($excludedEmails)) {
             $excludedEmailsArr = explode(';', $excludedEmails);
             $concated = implode("' AND email NOT LIKE '", $excludedEmailsArr);
             $sql = sprintf(

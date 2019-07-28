@@ -319,6 +319,70 @@ class PasswordNormalizerUnitTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function appendSqlWhereClauseWithNoExclusions()
+    {
+        $expected = 'SELECT * FROM my_awesome_table';
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $actual = $command->appendSqlWhereClause($expected, null);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function appendSqlWhereClauseWithEmptyString()
+    {
+        $expected = 'SELECT * FROM my_awesome_table';
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $actual = $command->appendSqlWhereClause($expected, '');
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function appendSqlWhereClauseWithOneEmail()
+    {
+        $exampleSql = 'SELECT * FROM my_awesome_table';
+        $mails = 'foo@example.com';
+        $expected = 'SELECT * FROM my_awesome_table WHERE email NOT LIKE \'foo@example.com\'';
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $actual = $command->appendSqlWhereClause($exampleSql, $mails);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function appendSqlWhereClauseWithTwoEmail()
+    {
+        $exampleSql = 'SELECT * FROM my_awesome_table';
+        $mails = 'foo@example.com;bar@example.com';
+        $expected = 'SELECT * FROM my_awesome_table WHERE email NOT LIKE \'foo@example.com\' AND email NOT LIKE \'bar@example.com\'';
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $actual = $command->appendSqlWhereClause($exampleSql, $mails);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
      * Helper method to configure a mocked version of
      * {@link \BitExpert\Magento\PasswordNormalizer\Command\PasswordNormalizer}.
      *
