@@ -45,8 +45,9 @@ class PasswordNormalizer extends AbstractMagentoCommand
                 self::OPTION_EXCLUDE_EMAILS,
                 'x',
                 InputOption::VALUE_OPTIONAL,
-                'Exclude email-addresses from being update by appending "WHERE email NOT LIKE ..." '.
-                '(example: --exclude-emails %@bitexpert.%)'
+                'Exclude email-addresses from being update by appending "WHERE email NOT LIKE ..."'.
+                '(example: --exclude-emails %@bitexpert.%)' . PHP_EOL .
+                '; separates multiple conditions (example: --exclude-emails %@bitexpert.%;%@gmail%)'
             )
             ->addOption(
                 self::OPTION_EMAIL_MASK,
@@ -95,12 +96,28 @@ class PasswordNormalizer extends AbstractMagentoCommand
             throw new LocalizedException(__('--email-mask must contain %1', self::ID_PLACEHOLDER));
         }
 
-
         $resource = $this->getResource();
         $connection = $resource->getConnection();
         $encryptor = $this->getEncryptor();
         $passwordHash = $encryptor->getHash($password, true);
 
+        $sql = $this->buildSql($mailMask, $passwordHash);
+        $sql = $this->appendSqlWhereClause($sql, $excludedEmails);
+
+        $result = $connection->query($sql);
+
+        $output->writeln(sprintf('>>> %d users updated', $result->rowCount()));
+    }
+
+    /**
+     * construct manual DB query, because magento2 is stupid and doesn't have good iterator or bulk-actions
+     *
+     * @param $mailMask
+     * @param $passwordHash
+     * @return string
+     */
+    public function buildSql($mailMask, $passwordHash)
+    {
         // convert the email-mask input to SQL
         $mailMask = str_replace(
             self::ID_PLACEHOLDER,
@@ -108,24 +125,35 @@ class PasswordNormalizer extends AbstractMagentoCommand
             $mailMask
         );
 
-        // construct manual DB query, because magento2 is stupid and doesn't have good iterator or bulk-actions
         $sql = sprintf(
             "UPDATE customer_entity SET email = CONCAT('%s'), password_hash = '%s'",
             $mailMask,
             $passwordHash
         );
 
-        if (isset($excludedEmails)) {
+        return $sql;
+    }
+
+    /**
+     * Appends the where clauses to the SQL based on the $excludedEmails
+     *
+     * @param $sql
+     * @param $excludedEmails
+     * @return string
+     */
+    public function appendSqlWhereClause($sql, $excludedEmails)
+    {
+        if (isset($excludedEmails) && !empty($excludedEmails)) {
+            $excludedEmailsArr = explode(';', $excludedEmails);
+            $concated = implode("' AND email NOT LIKE '", $excludedEmailsArr);
             $sql = sprintf(
                 "%s WHERE email NOT LIKE '%s'",
                 $sql,
-                $excludedEmails
+                $concated
             );
         }
 
-        $result = $connection->query($sql);
-
-        $output->writeln(sprintf('>>> %d users updated', $result->rowCount()));
+        return $sql;
     }
 
     /**

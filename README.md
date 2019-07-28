@@ -43,7 +43,8 @@ You will not be able to recover the old data, unlees you backed them up.
 
 ### You can provide an exclude-parameter that will not update the users that match the query.
 
-Example: `--exclude-emails %@bitexpert.%` will result in a query restricted with `WHERE email NOT LIKE '%@bitexpert.%'` thus NOT updating the password and email-address all bitExpert accounts
+Example: `--exclude-emails %@bitexpert.%` will result in a query restricted with `WHERE email NOT LIKE '%@bitexpert.%'` thus NOT updating the password and email-address all bitExpert accounts.
+If you want to exclude multiple "conditions" you can provide them ; separated `--exclude-emails %@bitexpert.%;%@gmail%`
 
 ### You can provide an email-mask
 
