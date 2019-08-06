@@ -30,7 +30,7 @@
     "magento/module-customer": "101.0.*",
     "phpunit/phpunit": "^6.5",
     "squizlabs/php_codesniffer": "^3.2",
-    "magento/module-indexer" : "*"
+    "magento/module-indexer" : ">=100.2.5"
   },
   "repositories": [
     {
