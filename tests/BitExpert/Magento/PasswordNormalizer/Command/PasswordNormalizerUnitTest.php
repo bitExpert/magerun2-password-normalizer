@@ -16,6 +16,7 @@ use Magento\Framework\App\State;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Indexer\Model\Indexer;
 use N98\Magento\Application;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputInterface;
@@ -56,6 +57,10 @@ class PasswordNormalizerUnitTest extends TestCase
      * @var State
      */
     private $state;
+    /**
+     * @var Indexer
+     */
+    private $indexer;
 
     /**
      * {@inheritDoc}
@@ -68,6 +73,7 @@ class PasswordNormalizerUnitTest extends TestCase
         $this->connection = $this->createMock(AdapterInterface::class);
         $this->input = $this->createMock(InputInterface::class);
         $this->output = $this->createMock(OutputInterface::class);
+        $this->indexer = $this->createMock(Indexer::class);
         $this->application = new Application();
         $this->application->init([], $this->input, $this->output);
         $this->resourceConnection = $this->createMock(ResourceConnection::class);
@@ -149,8 +155,10 @@ class PasswordNormalizerUnitTest extends TestCase
 
         // when everything is working fine, writeln() will be the last operation of the command. Thus, if the method
         // is called we can assume that the execution went well.
-        $this->output->expects($this->exactly(1))
+        $this->output->expects($this->exactly(3))
             ->method('writeln');
+
+        $this->indexer->expects($this->once())->method('reindexAll');
 
         /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();
@@ -284,8 +292,10 @@ class PasswordNormalizerUnitTest extends TestCase
 
         // when everything is working fine, writeln() will be the last operation of the command. Thus, if the method
         // is called we can assume that the execution went well.
-        $this->output->expects($this->exactly(1))
+        $this->output->expects($this->exactly(3))
             ->method('writeln');
+
+        $this->indexer->expects($this->once())->method('reindexAll');
 
         /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();
@@ -301,12 +311,12 @@ class PasswordNormalizerUnitTest extends TestCase
         self::expectException(LocalizedException::class);
 
         $this->input->expects($this->any())
-        ->method('getOption')
-        ->will(
-            $this->returnValueMap([
-                [PasswordNormalizer::OPTION_FORCE, false]
-            ])
-        );
+            ->method('getOption')
+            ->will(
+                $this->returnValueMap([
+                    [PasswordNormalizer::OPTION_FORCE, false]
+                ])
+            );
 
         $this->state->expects($this->any())
             ->method('getMode')
@@ -394,7 +404,7 @@ class PasswordNormalizerUnitTest extends TestCase
             ->disableOriginalClone()
             ->disableArgumentCloning()
             ->disallowMockingUnknownTypes()
-            ->setMethods(['getResource', 'getEncryptor', 'getState'])
+            ->setMethods(['getResource', 'getEncryptor', 'getState', 'getIndexer'])
             ->getMock();
         $command->method('getResource')
             ->willReturn($this->resourceConnection);
@@ -402,6 +412,8 @@ class PasswordNormalizerUnitTest extends TestCase
             ->willReturn($this->encryptor);
         $command->method('getState')
             ->willReturn($this->state);
+        $command->method('getIndexer')
+            ->willReturn($this->indexer);
         return $command;
     }
 }

@@ -29,7 +29,8 @@
     "magento/framework": "101.0.*",
     "magento/module-customer": "101.0.*",
     "phpunit/phpunit": "^6.5",
-    "squizlabs/php_codesniffer": "^3.2"
+    "squizlabs/php_codesniffer": "^3.2",
+    "magento/module-indexer" : "*"
   },
   "repositories": [
     {
