@@ -11,12 +11,13 @@
 
 namespace BitExpert\Magento\PasswordNormalizer\Command;
 
-use Magento\Customer\Model\ResourceModel\Customer\Collection as CustomerCollection;
+use Magento\Customer\Model\Customer;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\App\State;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Indexer\Model\Indexer;
 use N98\Magento\Command\AbstractMagentoCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -55,7 +56,7 @@ class PasswordNormalizer extends AbstractMagentoCommand
                 InputOption::VALUE_OPTIONAL,
                 'Define the email-mask that is used to normalize the addresses. Must contain ' . self::ID_PLACEHOLDER .
                 '. Default: customer_' . self::ID_PLACEHOLDER . '@example.com',
-                'customer_(ID)@example.com'
+                'customer_' . self::ID_PLACEHOLDER . '@example.com'
             )
             ->addOption(
                 self::OPTION_FORCE,
@@ -107,6 +108,10 @@ class PasswordNormalizer extends AbstractMagentoCommand
         $result = $connection->query($sql);
 
         $output->writeln(sprintf('>>> %d users updated', $result->rowCount()));
+
+        $output->writeln('Updating customer grid...');
+        $this->updateCustomerGrid();
+        $output->writeln('Updating customer grid done.');
     }
 
     /**
@@ -157,6 +162,16 @@ class PasswordNormalizer extends AbstractMagentoCommand
     }
 
     /**
+     * Refreshes the customer_grid
+     */
+    public function updateCustomerGrid()
+    {
+        $indexer = $this->getIndexer();
+        $indexer->load(Customer::CUSTOMER_GRID_INDEXER_ID);
+        $indexer->reindexAll();
+    }
+
+    /**
      * Helper method to return the database connection.
      *
      * @return ResourceConnection
@@ -184,5 +199,15 @@ class PasswordNormalizer extends AbstractMagentoCommand
     protected function getState(): State
     {
         return ObjectManager::getInstance()->get(State::class);
+    }
+
+    /**
+     * Helper method to return the Indexer.
+     *
+     * @return Indexer
+     */
+    protected function getIndexer(): Indexer
+    {
+        return ObjectManager::getInstance()->get(Indexer::class);
     }
 }
