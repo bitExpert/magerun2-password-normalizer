@@ -16,6 +16,7 @@ use Magento\Framework\App\State;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Indexer\Model\Indexer;
 use N98\Magento\Application;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputInterface;
@@ -56,6 +57,10 @@ class PasswordNormalizerUnitTest extends TestCase
      * @var State
      */
     private $state;
+    /**
+     * @var Indexer
+     */
+    private $indexer;
 
     /**
      * {@inheritDoc}
@@ -68,6 +73,7 @@ class PasswordNormalizerUnitTest extends TestCase
         $this->connection = $this->createMock(AdapterInterface::class);
         $this->input = $this->createMock(InputInterface::class);
         $this->output = $this->createMock(OutputInterface::class);
+        $this->indexer = $this->createMock(Indexer::class);
         $this->application = new Application();
         $this->application->init([], $this->input, $this->output);
         $this->resourceConnection = $this->createMock(ResourceConnection::class);
@@ -91,6 +97,23 @@ class PasswordNormalizerUnitTest extends TestCase
         $this->state->expects($this->any())
             ->method('getMode')
             ->willReturn(\Magento\Framework\App\State::MODE_PRODUCTION);
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $command->run($this->input, $this->output);
+    }
+
+    /**
+     * @test
+     */
+    public function commandCannotBeRunInDefaultMode()
+    {
+        self::expectException(LocalizedException::class);
+
+        $this->state->expects($this->any())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_DEFAULT);
 
         /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();
@@ -132,8 +155,10 @@ class PasswordNormalizerUnitTest extends TestCase
 
         // when everything is working fine, writeln() will be the last operation of the command. Thus, if the method
         // is called we can assume that the execution went well.
-        $this->output->expects($this->exactly(1))
+        $this->output->expects($this->exactly(3))
             ->method('writeln');
+
+        $this->indexer->expects($this->once())->method('reindexAll');
 
         /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();
@@ -242,6 +267,132 @@ class PasswordNormalizerUnitTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function passingForceParameterBypassModeCheck()
+    {
+        $this->input->expects($this->any())
+            ->method('getOption')
+            ->will(
+                $this->returnValueMap([
+                    [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
+                    [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
+                    [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, 'bitexpert.de'],
+                    [PasswordNormalizer::OPTION_FORCE, true]
+                ])
+            );
+
+        $this->state->expects($this->never())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_PRODUCTION);
+
+        $this->connection->expects($this->any())
+            ->method('query')
+            ->willReturn($this->statement);
+
+        // when everything is working fine, writeln() will be the last operation of the command. Thus, if the method
+        // is called we can assume that the execution went well.
+        $this->output->expects($this->exactly(3))
+            ->method('writeln');
+
+        $this->indexer->expects($this->once())->method('reindexAll');
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $command->run($this->input, $this->output);
+    }
+
+    /**
+     * @test
+     */
+    public function missingForceParameterBypassModeCheck()
+    {
+        self::expectException(LocalizedException::class);
+
+        $this->input->expects($this->any())
+            ->method('getOption')
+            ->will(
+                $this->returnValueMap([
+                    [PasswordNormalizer::OPTION_FORCE, false]
+                ])
+            );
+
+        $this->state->expects($this->any())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_PRODUCTION);
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $command->run($this->input, $this->output);
+    }
+
+    /**
+     * @test
+     */
+    public function appendSqlWhereClauseWithNoExclusions()
+    {
+        $expected = 'SELECT * FROM my_awesome_table';
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $actual = $command->appendSqlWhereClause($expected, null);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function appendSqlWhereClauseWithEmptyString()
+    {
+        $expected = 'SELECT * FROM my_awesome_table';
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $actual = $command->appendSqlWhereClause($expected, '');
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function appendSqlWhereClauseWithOneEmail()
+    {
+        $exampleSql = 'SELECT * FROM my_awesome_table';
+        $mails = 'foo@example.com';
+        $expected = 'SELECT * FROM my_awesome_table WHERE email NOT LIKE \'foo@example.com\'';
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $actual = $command->appendSqlWhereClause($exampleSql, $mails);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function appendSqlWhereClauseWithTwoEmail()
+    {
+        $exampleSql = 'SELECT * FROM my_awesome_table';
+        $mails = 'foo@example.com;bar@example.com';
+        $expected = 'SELECT * FROM my_awesome_table WHERE email NOT LIKE \'foo@example.com\' AND email NOT LIKE \'bar@example.com\'';
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $actual = $command->appendSqlWhereClause($exampleSql, $mails);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
      * Helper method to configure a mocked version of
      * {@link \BitExpert\Magento\PasswordNormalizer\Command\PasswordNormalizer}.
      *
@@ -253,7 +404,7 @@ class PasswordNormalizerUnitTest extends TestCase
             ->disableOriginalClone()
             ->disableArgumentCloning()
             ->disallowMockingUnknownTypes()
-            ->setMethods(['getResource', 'getEncryptor', 'getState'])
+            ->setMethods(['getResource', 'getEncryptor', 'getState', 'getIndexer'])
             ->getMock();
         $command->method('getResource')
             ->willReturn($this->resourceConnection);
@@ -261,6 +412,8 @@ class PasswordNormalizerUnitTest extends TestCase
             ->willReturn($this->encryptor);
         $command->method('getState')
             ->willReturn($this->state);
+        $command->method('getIndexer')
+            ->willReturn($this->indexer);
         return $command;
     }
 }

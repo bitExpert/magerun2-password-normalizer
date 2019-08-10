@@ -11,12 +11,13 @@
 
 namespace BitExpert\Magento\PasswordNormalizer\Command;
 
-use Magento\Customer\Model\ResourceModel\Customer\Collection as CustomerCollection;
+use Magento\Customer\Model\Customer;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\App\State;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Indexer\Model\Indexer;
 use N98\Magento\Command\AbstractMagentoCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -27,6 +28,7 @@ class PasswordNormalizer extends AbstractMagentoCommand
     const OPTION_PASSWORD = 'password';
     const OPTION_EXCLUDE_EMAILS = 'exclude-emails';
     const OPTION_EMAIL_MASK = 'email-mask';
+    const OPTION_FORCE = 'force';
     const ID_PLACEHOLDER = '(ID)';
 
     protected function configure()
@@ -44,8 +46,9 @@ class PasswordNormalizer extends AbstractMagentoCommand
                 self::OPTION_EXCLUDE_EMAILS,
                 'x',
                 InputOption::VALUE_OPTIONAL,
-                'Exclude email-addresses from being update by appending "WHERE email NOT LIKE ..." '.
-                '(example: --exclude-emails %@bitexpert.%)'
+                'Exclude email-addresses from being update by appending "WHERE email NOT LIKE ..."'.
+                '(example: --exclude-emails %@bitexpert.%)' . PHP_EOL .
+                '; separates multiple conditions (example: --exclude-emails %@bitexpert.%;%@gmail%)'
             )
             ->addOption(
                 self::OPTION_EMAIL_MASK,
@@ -53,7 +56,13 @@ class PasswordNormalizer extends AbstractMagentoCommand
                 InputOption::VALUE_OPTIONAL,
                 'Define the email-mask that is used to normalize the addresses. Must contain ' . self::ID_PLACEHOLDER .
                 '. Default: customer_' . self::ID_PLACEHOLDER . '@example.com',
-                'customer_(ID)@example.com'
+                'customer_' . self::ID_PLACEHOLDER . '@example.com'
+            )
+            ->addOption(
+                self::OPTION_FORCE,
+                'f',
+                InputOption::VALUE_NONE,
+                'Performs actions even if the mode is not developer - USE WITH CAUTION!!!'
             );
     }
 
@@ -70,7 +79,8 @@ class PasswordNormalizer extends AbstractMagentoCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // check environment
-        if (State::MODE_DEVELOPER !== $this->getState()->getMode()) {
+        $force = $input->getOption(self::OPTION_FORCE);
+        if (!($force || State::MODE_DEVELOPER == $this->getState()->getMode())) {
             throw new LocalizedException(__('This command can only be run in developer mode!'));
         }
 
@@ -87,12 +97,32 @@ class PasswordNormalizer extends AbstractMagentoCommand
             throw new LocalizedException(__('--email-mask must contain %1', self::ID_PLACEHOLDER));
         }
 
-
         $resource = $this->getResource();
         $connection = $resource->getConnection();
         $encryptor = $this->getEncryptor();
         $passwordHash = $encryptor->getHash($password, true);
 
+        $sql = $this->buildSql($mailMask, $passwordHash);
+        $sql = $this->appendSqlWhereClause($sql, $excludedEmails);
+
+        $result = $connection->query($sql);
+
+        $output->writeln(sprintf('>>> %d users updated', $result->rowCount()));
+
+        $output->writeln('Updating customer grid...');
+        $this->updateCustomerGrid();
+        $output->writeln('Updating customer grid done.');
+    }
+
+    /**
+     * construct manual DB query, because magento2 is stupid and doesn't have good iterator or bulk-actions
+     *
+     * @param $mailMask
+     * @param $passwordHash
+     * @return string
+     */
+    public function buildSql($mailMask, $passwordHash)
+    {
         // convert the email-mask input to SQL
         $mailMask = str_replace(
             self::ID_PLACEHOLDER,
@@ -100,24 +130,45 @@ class PasswordNormalizer extends AbstractMagentoCommand
             $mailMask
         );
 
-        // construct manual DB query, because magento2 is stupid and doesn't have good iterator or bulk-actions
         $sql = sprintf(
             "UPDATE customer_entity SET email = CONCAT('%s'), password_hash = '%s'",
             $mailMask,
             $passwordHash
         );
 
-        if (isset($excludedEmails)) {
+        return $sql;
+    }
+
+    /**
+     * Appends the where clauses to the SQL based on the $excludedEmails
+     *
+     * @param $sql
+     * @param $excludedEmails
+     * @return string
+     */
+    public function appendSqlWhereClause($sql, $excludedEmails)
+    {
+        if (isset($excludedEmails) && !empty($excludedEmails)) {
+            $excludedEmailsArr = explode(';', $excludedEmails);
+            $concated = implode("' AND email NOT LIKE '", $excludedEmailsArr);
             $sql = sprintf(
                 "%s WHERE email NOT LIKE '%s'",
                 $sql,
-                $excludedEmails
+                $concated
             );
         }
 
-        $result = $connection->query($sql);
+        return $sql;
+    }
 
-        $output->writeln(sprintf('>>> %d users updated', $result->rowCount()));
+    /**
+     * Refreshes the customer_grid
+     */
+    public function updateCustomerGrid()
+    {
+        $indexer = $this->getIndexer();
+        $indexer->load(Customer::CUSTOMER_GRID_INDEXER_ID);
+        $indexer->reindexAll();
     }
 
     /**
@@ -148,5 +199,15 @@ class PasswordNormalizer extends AbstractMagentoCommand
     protected function getState(): State
     {
         return ObjectManager::getInstance()->get(State::class);
+    }
+
+    /**
+     * Helper method to return the Indexer.
+     *
+     * @return Indexer
+     */
+    protected function getIndexer(): Indexer
+    {
+        return ObjectManager::getInstance()->get(Indexer::class);
     }
 }

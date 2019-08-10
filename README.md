@@ -6,6 +6,18 @@
 
 ## Installation
 
+### For your OS-user
+
+n98-magerun2 will automatically load the plugins laying under `~/.n98-magerun2/modules` (create this folder if it does not exist). 
+
+To add this command, simply clone the repository.
+
+```
+git clone git@github.com:bitExpert/magerun2-password-normalizer.git ~/.n98-magerun2/modules/magerun2-password-normalizer
+```
+
+### For specific projects
+
 The preferred way of installing `bitexpert/magerun2-password-normalizer` is through Composer.
 Simply add `bitexpert/magerun2-password-normalizer` as a dev dependency:
 
@@ -19,6 +31,8 @@ This plugin adds the `dev:customer:normalize-passwords` command to magerun2.
 
 **It is designed to be executed only on development- or test-systems!**
 
+You must add --force when you're not in "developer" mode
+
 **You should never execute this on a production-system!**
 
 You will not be able to recover the old data, unlees you backed them up.
@@ -29,7 +43,8 @@ You will not be able to recover the old data, unlees you backed them up.
 
 ### You can provide an exclude-parameter that will not update the users that match the query.
 
-Example: `--exclude-emails %@bitexpert.%` will result in a query restricted with `WHERE email NOT LIKE '%@bitexpert.%'` thus NOT updating the password and email-address all bitExpert accounts
+Example: `--exclude-emails %@bitexpert.%` will result in a query restricted with `WHERE email NOT LIKE '%@bitexpert.%'` thus NOT updating the password and email-address all bitExpert accounts.
+If you want to exclude multiple "conditions" you can provide them ; separated `--exclude-emails %@bitexpert.%;%@gmail%`
 
 ### You can provide an email-mask
 
