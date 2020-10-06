@@ -25,6 +25,11 @@ Simply add `bitexpert/magerun2-password-normalizer` as a dev dependency:
 composer.phar require --dev bitexpert/magerun2-password-normalizer
 ```
 
+Then symlink it to your project specific n98-magerun2 modules:
+```
+ln -s vendor/bitexpert/magerun2-password-normalizer lib/n98-magerun2/modules/magerun2-password-normalizer
+```
+
 ## Usage
 
 This plugin adds the `dev:customer:normalize-passwords` command to magerun2.
