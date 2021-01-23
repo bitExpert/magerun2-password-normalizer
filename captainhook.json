@@ -12,8 +12,13 @@
         ]
     },
     "pre-push": {
-        "enabled": false,
-        "actions": []
+        "enabled": true,
+        "actions": [
+            {
+                "action": "./vendor/bin/phing analyse",
+                "options": []
+            }
+        ]
     },
     "pre-commit": {
         "enabled": true,
