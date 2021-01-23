@@ -1,22 +1,11 @@
 # magerun2-password-normalizer
 
-[![Build Status](https://travis-ci.org/bitExpert/magerun2-password-normalizer.svg?branch=master)](https://travis-ci.org/bitExpert/magerun2-password-normalizer)
-
 [netz98 Magerun2](https://github.com/netz98/n98-magerun2) Plugin for changing the passwords and email-addresses for customer-accounts in bulk.
 
+[![Build Status](https://github.com/bitExpert/magerun2-password-normalizer/workflows/ci/badge.svg?branch=master)](https://github.com/bitExpert/magerun2-password-normalizer)
+[![Coverage Status](https://coveralls.io/repos/github/bitExpert/magerun2-password-normalizer/badge.svg?branch=master)](https://coveralls.io/github/bitExpert/magerun2-password-normalizer?branch=master)
+
 ## Installation
-
-### For your OS-user
-
-n98-magerun2 will automatically load the plugins laying under `~/.n98-magerun2/modules` (create this folder if it does not exist). 
-
-To add this command, simply clone the repository.
-
-```
-git clone git@github.com:bitExpert/magerun2-password-normalizer.git ~/.n98-magerun2/modules/magerun2-password-normalizer
-```
-
-### For specific projects
 
 The preferred way of installing `bitexpert/magerun2-password-normalizer` is through Composer.
 Simply add `bitexpert/magerun2-password-normalizer` as a dev dependency:
@@ -25,9 +14,20 @@ Simply add `bitexpert/magerun2-password-normalizer` as a dev dependency:
 composer.phar require --dev bitexpert/magerun2-password-normalizer
 ```
 
-Then symlink it to your project specific n98-magerun2 modules:
+### Local installation
+
+If you do not want to add the command to one specific project only, you can install the plugin globally by placing the
+code in the `~/.n98-magerun2/modules` directory. If the folder does not already exist in your setup, create the folder
+by running the following command:
+
 ```
-ln -s vendor/bitexpert/magerun2-password-normalizer lib/n98-magerun2/modules/magerun2-password-normalizer
+mkdir -p  ~/.n98-magerun2/modules
+```
+
+The next thing to do is to clone the repository in a subdirectory of `~/.n98-magerun2/modules`:
+
+```
+git clone git@github.com:bitExpert/magerun2-password-normalizer.git ~/.n98-magerun2/modules/magerun2-password-normalizer
 ```
 
 ## Usage
