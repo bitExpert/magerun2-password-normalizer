@@ -2,3 +2,6 @@ parameters:
     level: 7
     paths:
         - src
+    bootstrapFiles:
+            - vendor/bitexpert/phpstan-magento/autoload.php
+
