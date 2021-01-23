@@ -65,7 +65,7 @@ class PasswordNormalizerUnitTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -382,7 +382,8 @@ class PasswordNormalizerUnitTest extends TestCase
     {
         $exampleSql = 'SELECT * FROM my_awesome_table';
         $mails = 'foo@example.com;bar@example.com';
-        $expected = 'SELECT * FROM my_awesome_table WHERE email NOT LIKE \'foo@example.com\' AND email NOT LIKE \'bar@example.com\'';
+        $expected = 'SELECT * FROM my_awesome_table WHERE email NOT LIKE \'foo@example.com\' AND '.
+            'email NOT LIKE \'bar@example.com\'';
 
         /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();

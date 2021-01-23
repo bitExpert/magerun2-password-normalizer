@@ -11,6 +11,3 @@
 
 // include and configure Composer autoloader
 include __DIR__ . '/../vendor/autoload.php';
-
-// include mocked functions
-include __DIR__ . '/functions.php';

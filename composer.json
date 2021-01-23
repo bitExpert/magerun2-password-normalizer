@@ -22,20 +22,20 @@
     }
   ],
   "require": {
-    "php": ">=7.0"
+    "php": "^7.4",
+    "magento/framework": "102.0.6|103.0.0|103.0.1",
+    "magento/module-customer": "102.0.6|103.0.0|103.0.1",
+    "magento/module-indexer" : "100.3.6|100.4.0|100.4.1"
   },
   "require-dev": {
-    "n98/magerun2": "^2.3",
-    "magento/framework": "101.0.*",
-    "magento/module-customer": "101.0.*",
-    "phpunit/phpunit": "^6.5",
-    "squizlabs/php_codesniffer": "^3.2",
-    "magento/module-indexer" : ">=100.2.5"
+    "n98/magerun2": "^4.0.0",
+    "phpunit/phpunit": "^9.5",
+    "squizlabs/php_codesniffer": "^3.5"
   },
   "repositories": [
     {
       "type": "composer",
-      "url": "https://repo.magento.com/"
+      "url": "https://repo-magento-mirror.fooman.co.nz"
     }
   ],
   "autoload": {
