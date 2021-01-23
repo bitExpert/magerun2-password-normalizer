@@ -31,7 +31,7 @@ class PasswordNormalizer extends AbstractMagentoCommand
     const OPTION_FORCE = 'force';
     const ID_PLACEHOLDER = '(ID)';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('dev:customer:normalize-passwords')
@@ -85,11 +85,14 @@ class PasswordNormalizer extends AbstractMagentoCommand
         }
 
         $excludedEmails = $input->getOption(self::OPTION_EXCLUDE_EMAILS);
+        $excludedEmails = is_string($excludedEmails) ? $excludedEmails : '';
         $password = $input->getOption(self::OPTION_PASSWORD);
+        $password = is_string($password) ? $password : '';
         $mailMask = $input->getOption(self::OPTION_EMAIL_MASK);
+        $mailMask = is_string($mailMask) ? $mailMask : '';
 
         // option validation
-        if (!isset($password)) {
+        if (empty($password)) {
             throw new LocalizedException(__('--password is a required option'));
         }
 
@@ -115,13 +118,13 @@ class PasswordNormalizer extends AbstractMagentoCommand
     }
 
     /**
-     * construct manual DB query, because magento2 is stupid and doesn't have good iterator or bulk-actions
+     * Construct manual DB query, because Magento2 is stupid and doesn't have good iterator or bulk-actions
      *
-     * @param $mailMask
-     * @param $passwordHash
+     * @param string $mailMask
+     * @param string $passwordHash
      * @return string
      */
-    public function buildSql($mailMask, $passwordHash)
+    public function buildSql(string $mailMask, string $passwordHash): string
     {
         // convert the email-mask input to SQL
         $mailMask = str_replace(
@@ -142,11 +145,11 @@ class PasswordNormalizer extends AbstractMagentoCommand
     /**
      * Appends the where clauses to the SQL based on the $excludedEmails
      *
-     * @param $sql
-     * @param $excludedEmails
+     * @param string $sql
+     * @param string $excludedEmails
      * @return string
      */
-    public function appendSqlWhereClause($sql, $excludedEmails)
+    public function appendSqlWhereClause(string $sql, string $excludedEmails = null): string
     {
         if (isset($excludedEmails) && !empty($excludedEmails)) {
             $excludedEmailsArr = explode(';', $excludedEmails);
@@ -164,7 +167,7 @@ class PasswordNormalizer extends AbstractMagentoCommand
     /**
      * Refreshes the customer_grid
      */
-    public function updateCustomerGrid()
+    public function updateCustomerGrid(): void
     {
         $indexer = $this->getIndexer();
         $indexer->load(Customer::CUSTOMER_GRID_INDEXER_ID);
