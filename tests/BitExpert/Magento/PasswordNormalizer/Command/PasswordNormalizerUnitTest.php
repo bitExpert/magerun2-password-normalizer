@@ -153,6 +153,10 @@ class PasswordNormalizerUnitTest extends TestCase
             ->method('query')
             ->willReturn($this->statement);
 
+        $this->encryptor->expects($this->any())
+            ->method('getHash')
+            ->willReturn('abcdef');
+
         // when everything is working fine, writeln() will be the last operation of the command. Thus, if the method
         // is called we can assume that the execution went well.
         $this->output->expects($this->exactly(3))
@@ -289,6 +293,10 @@ class PasswordNormalizerUnitTest extends TestCase
         $this->connection->expects($this->any())
             ->method('query')
             ->willReturn($this->statement);
+
+        $this->encryptor->expects($this->any())
+            ->method('getHash')
+            ->willReturn('abcdef');
 
         // when everything is working fine, writeln() will be the last operation of the command. Thus, if the method
         // is called we can assume that the execution went well.
