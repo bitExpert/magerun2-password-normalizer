@@ -4,6 +4,7 @@
 
 [![Build Status](https://github.com/bitExpert/magerun2-password-normalizer/workflows/ci/badge.svg?branch=master)](https://github.com/bitExpert/magerun2-password-normalizer)
 [![Coverage Status](https://coveralls.io/repos/github/bitExpert/magerun2-password-normalizer/badge.svg?branch=master)](https://coveralls.io/github/bitExpert/magerun2-password-normalizer?branch=master)
+[![Infection MSI](https://badge.stryker-mutator.io/github.com/bitExpert/magerun2-password-normalizer/master)](https://infection.github.io)
 
 ## Installation
 
