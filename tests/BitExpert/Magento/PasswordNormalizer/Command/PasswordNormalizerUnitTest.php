@@ -11,6 +11,7 @@
 
 namespace BitExpert\Magento\PasswordNormalizer\Command;
 
+use Magento\Customer\Model\Customer;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\App\State;
 use Magento\Framework\DB\Adapter\AdapterInterface;
@@ -82,9 +83,18 @@ class PasswordNormalizerUnitTest extends TestCase
             ->willReturn($this->connection);
         $this->encryptor = $this->createMock(EncryptorInterface::class);
         $this->state = $this->createMock(State::class);
-        $this->state->expects($this->any())
-            ->method('getMode')
-            ->willReturn(\Magento\Framework\App\State::MODE_DEVELOPER);
+    }
+
+    /**
+     * @test
+     */
+    public function checkCommandConfiguration(): void
+    {
+        $command = $this->getPasswordNormalizerMock();
+        $options = $command->getDefinition()->getOptions();
+        $this->assertSame('dev:customer:normalize-passwords', $command->getName());
+        $this->assertSame('Normalizes all customer-email-addresses and passwords', $command->getDescription());
+        $this->assertCount(4, $options);
     }
 
     /**
@@ -93,6 +103,7 @@ class PasswordNormalizerUnitTest extends TestCase
     public function commandCannotBeRunInProductionMode()
     {
         self::expectException(LocalizedException::class);
+        self::expectExceptionMessage('This command can only be run in developer mode!');
 
         $this->state->expects($this->any())
             ->method('getMode')
@@ -110,6 +121,7 @@ class PasswordNormalizerUnitTest extends TestCase
     public function commandCannotBeRunInDefaultMode()
     {
         self::expectException(LocalizedException::class);
+        self::expectExceptionMessage('This command can only be run in developer mode!');
 
         $this->state->expects($this->any())
             ->method('getMode')
@@ -127,6 +139,38 @@ class PasswordNormalizerUnitTest extends TestCase
     public function missingPasswordParameterThrowsException()
     {
         self::expectException(LocalizedException::class);
+        self::expectExceptionMessage('--password is a required option');
+
+        $this->state->expects($this->any())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_DEVELOPER);
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $command->run($this->input, $this->output);
+    }
+
+    /**
+     * @test
+     */
+    public function emailMaskMissingPlaceholderThrowsException()
+    {
+        self::expectException(LocalizedException::class);
+        self::expectExceptionMessage('--email-mask must contain (ID)');
+
+        $this->input->expects($this->any())
+            ->method('getOption')
+            ->willReturnMap([
+                [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
+                [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer@example.com'],
+                [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
+            ]);
+
+        $this->state->expects($this->any())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_DEVELOPER);
+
 
         /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();
@@ -141,13 +185,15 @@ class PasswordNormalizerUnitTest extends TestCase
     {
         $this->input->expects($this->any())
             ->method('getOption')
-            ->will(
-                $this->returnValueMap([
-                    [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
-                    [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
-                    [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
-                ])
-            );
+            ->willReturnMap([
+                [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
+                [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
+                [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
+            ]);
+
+        $this->state->expects($this->any())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_DEVELOPER);
 
         $this->connection->expects($this->any())
             ->method('query')
@@ -162,7 +208,8 @@ class PasswordNormalizerUnitTest extends TestCase
         $this->output->expects($this->exactly(3))
             ->method('writeln');
 
-        $this->indexer->expects($this->once())->method('reindexAll');
+        $this->indexer->expects($this->once())
+            ->method('reindexAll');
 
         /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();
@@ -177,13 +224,15 @@ class PasswordNormalizerUnitTest extends TestCase
     {
         $this->input->expects($this->any())
             ->method('getOption')
-            ->will(
-                $this->returnValueMap([
-                    [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
-                    [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
-                    [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
-                ])
-            );
+            ->willReturnMap([
+                [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
+                [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
+                [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
+            ]);
+
+        $this->state->expects($this->any())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_DEVELOPER);
 
         $this->encryptor->expects($this->once())
             ->method('getHash')
@@ -191,7 +240,7 @@ class PasswordNormalizerUnitTest extends TestCase
                 $this->equalTo('random-password-to-set'),
                 $this->equalTo(true)
             )
-            ->will($this->returnValue('encrypted-random-password'));
+            ->willReturn('encrypted-random-password');
 
         $this->connection->expects($this->once())
             ->method('query')
@@ -217,13 +266,15 @@ class PasswordNormalizerUnitTest extends TestCase
 
         $this->input->expects($this->any())
             ->method('getOption')
-            ->will(
-                $this->returnValueMap([
-                    [PasswordNormalizer::OPTION_PASSWORD, ''],
-                    [PasswordNormalizer::OPTION_EMAIL_MASK, 'some-mask-without-placeholder'],
-                    [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
-                ])
-            );
+            ->willReturnMap([
+                [PasswordNormalizer::OPTION_PASSWORD, ''],
+                [PasswordNormalizer::OPTION_EMAIL_MASK, 'some-mask-without-placeholder'],
+                [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
+            ]);
+
+        $this->state->expects($this->any())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_DEVELOPER);
 
         /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();
@@ -238,13 +289,15 @@ class PasswordNormalizerUnitTest extends TestCase
     {
         $this->input->expects($this->any())
             ->method('getOption')
-            ->will(
-                $this->returnValueMap([
-                    [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
-                    [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
-                    [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, 'bitexpert.de'],
-                ])
-            );
+            ->willReturnMap([
+                [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
+                [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
+                [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, 'bitexpert.de'],
+            ]);
+
+        $this->state->expects($this->any())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_DEVELOPER);
 
         $this->encryptor->expects($this->once())
             ->method('getHash')
@@ -252,17 +305,25 @@ class PasswordNormalizerUnitTest extends TestCase
                 $this->equalTo('random-password-to-set'),
                 $this->equalTo(true)
             )
-            ->will($this->returnValue('encrypted-random-password'));
+            ->willReturn('encrypted-random-password');
 
         $this->connection->expects($this->once())
             ->method('query')
             ->with(
                 $this->callback(function ($sql) {
-                    return strpos($sql, 'encrypted-random-password') > 0 &&
-                        strpos($sql, 'bitexpert.de') > 0;
+                    return strpos($sql, 'encrypted-random-password') > 0 && strpos($sql, 'bitexpert.de') > 0;
                 })
             )
             ->willReturn($this->statement);
+
+        $this->indexer->expects($this->once())
+            ->method('load')
+            ->with(
+                $this->equalTo(Customer::CUSTOMER_GRID_INDEXER_ID)
+            );
+
+        $this->indexer->expects($this->once())
+            ->method('reindexAll');
 
         /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();
@@ -277,14 +338,16 @@ class PasswordNormalizerUnitTest extends TestCase
     {
         $this->input->expects($this->any())
             ->method('getOption')
-            ->will(
-                $this->returnValueMap([
-                    [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
-                    [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
-                    [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, 'bitexpert.de'],
-                    [PasswordNormalizer::OPTION_FORCE, true]
-                ])
-            );
+            ->willReturnMap([
+                [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
+                [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
+                [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, 'bitexpert.de'],
+                [PasswordNormalizer::OPTION_FORCE, true]
+            ]);
+
+        $this->state->expects($this->any())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_DEVELOPER);
 
         $this->state->expects($this->never())
             ->method('getMode')
@@ -320,11 +383,9 @@ class PasswordNormalizerUnitTest extends TestCase
 
         $this->input->expects($this->any())
             ->method('getOption')
-            ->will(
-                $this->returnValueMap([
-                    [PasswordNormalizer::OPTION_FORCE, false]
-                ])
-            );
+            ->willReturnMap([
+                [PasswordNormalizer::OPTION_FORCE, false]
+            ]);
 
         $this->state->expects($this->any())
             ->method('getMode')
@@ -334,71 +395,6 @@ class PasswordNormalizerUnitTest extends TestCase
         $command = $this->getPasswordNormalizerMock();
         $command->setApplication($this->application);
         $command->run($this->input, $this->output);
-    }
-
-    /**
-     * @test
-     */
-    public function appendSqlWhereClauseWithNoExclusions()
-    {
-        $expected = 'SELECT * FROM my_awesome_table';
-
-        /** @var PasswordNormalizer $command */
-        $command = $this->getPasswordNormalizerMock();
-        $command->setApplication($this->application);
-        $actual = $command->appendSqlWhereClause($expected, null);
-
-        self::assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function appendSqlWhereClauseWithEmptyString()
-    {
-        $expected = 'SELECT * FROM my_awesome_table';
-
-        /** @var PasswordNormalizer $command */
-        $command = $this->getPasswordNormalizerMock();
-        $command->setApplication($this->application);
-        $actual = $command->appendSqlWhereClause($expected, '');
-
-        self::assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function appendSqlWhereClauseWithOneEmail()
-    {
-        $exampleSql = 'SELECT * FROM my_awesome_table';
-        $mails = 'foo@example.com';
-        $expected = 'SELECT * FROM my_awesome_table WHERE email NOT LIKE \'foo@example.com\'';
-
-        /** @var PasswordNormalizer $command */
-        $command = $this->getPasswordNormalizerMock();
-        $command->setApplication($this->application);
-        $actual = $command->appendSqlWhereClause($exampleSql, $mails);
-
-        self::assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function appendSqlWhereClauseWithTwoEmail()
-    {
-        $exampleSql = 'SELECT * FROM my_awesome_table';
-        $mails = 'foo@example.com;bar@example.com';
-        $expected = 'SELECT * FROM my_awesome_table WHERE email NOT LIKE \'foo@example.com\' AND '.
-            'email NOT LIKE \'bar@example.com\'';
-
-        /** @var PasswordNormalizer $command */
-        $command = $this->getPasswordNormalizerMock();
-        $command->setApplication($this->application);
-        $actual = $command->appendSqlWhereClause($exampleSql, $mails);
-
-        self::assertEquals($expected, $actual);
     }
 
     /**

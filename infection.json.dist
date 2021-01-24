@@ -1,0 +1,21 @@
+{
+    "source": {
+        "directories": [
+            "src"
+        ]
+    },
+    "logs": {
+        "text": "infection.log"
+    },
+    "mutators": {
+        "@default": true,
+        "ProtectedVisibility": {
+            "ignore": [
+                "BitExpert\\Magento\\PasswordNormalizer\\Command\\PasswordNormalizer::getResource",
+                "BitExpert\\Magento\\PasswordNormalizer\\Command\\PasswordNormalizer::getEncryptor",
+                "BitExpert\\Magento\\PasswordNormalizer\\Command\\PasswordNormalizer::getState",
+                "BitExpert\\Magento\\PasswordNormalizer\\Command\\PasswordNormalizer::getIndexer"
+            ]
+        }
+    }
+}

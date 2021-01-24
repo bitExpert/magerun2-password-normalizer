@@ -25,11 +25,25 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class PasswordNormalizer extends AbstractMagentoCommand
 {
-    const OPTION_PASSWORD = 'password';
-    const OPTION_EXCLUDE_EMAILS = 'exclude-emails';
-    const OPTION_EMAIL_MASK = 'email-mask';
-    const OPTION_FORCE = 'force';
-    const ID_PLACEHOLDER = '(ID)';
+    public const OPTION_PASSWORD = 'password';
+    public const OPTION_EXCLUDE_EMAILS = 'exclude-emails';
+    public const OPTION_EMAIL_MASK = 'email-mask';
+    public const OPTION_FORCE = 'force';
+    /**
+     * @var SqlHelper
+     */
+    private $sqlHelper;
+
+    /**
+     * PasswordNormalizer constructor.
+     *
+     * @param string|null $name
+     */
+    public function __construct(string $name = null)
+    {
+        parent::__construct($name);
+        $this->sqlHelper = new SqlHelper();
+    }
 
     protected function configure(): void
     {
@@ -54,9 +68,9 @@ class PasswordNormalizer extends AbstractMagentoCommand
                 self::OPTION_EMAIL_MASK,
                 'm',
                 InputOption::VALUE_OPTIONAL,
-                'Define the email-mask that is used to normalize the addresses. Must contain ' . self::ID_PLACEHOLDER .
-                '. Default: customer_' . self::ID_PLACEHOLDER . '@example.com',
-                'customer_' . self::ID_PLACEHOLDER . '@example.com'
+                'Define the email-mask that is used to normalize the addresses. Must contain ' .
+                SqlHelper::ID_PLACEHOLDER . '. Default: customer_' . SqlHelper::ID_PLACEHOLDER . '@example.com',
+                'customer_' . SqlHelper::ID_PLACEHOLDER . '@example.com'
             )
             ->addOption(
                 self::OPTION_FORCE,
@@ -80,6 +94,7 @@ class PasswordNormalizer extends AbstractMagentoCommand
     {
         // check environment
         $force = $input->getOption(self::OPTION_FORCE);
+
         if (!($force || State::MODE_DEVELOPER == $this->getState()->getMode())) {
             throw new LocalizedException(__('This command can only be run in developer mode!'));
         }
@@ -96,8 +111,8 @@ class PasswordNormalizer extends AbstractMagentoCommand
             throw new LocalizedException(__('--password is a required option'));
         }
 
-        if (!strpos($mailMask, self::ID_PLACEHOLDER)) {
-            throw new LocalizedException(__('--email-mask must contain %1', self::ID_PLACEHOLDER));
+        if (!strpos($mailMask, SqlHelper::ID_PLACEHOLDER)) {
+            throw new LocalizedException(__('--email-mask must contain %1', SqlHelper::ID_PLACEHOLDER));
         }
 
         $resource = $this->getResource();
@@ -105,8 +120,8 @@ class PasswordNormalizer extends AbstractMagentoCommand
         $encryptor = $this->getEncryptor();
         $passwordHash = $encryptor->getHash($password, true);
 
-        $sql = $this->buildSql($mailMask, $passwordHash);
-        $sql = $this->appendSqlWhereClause($sql, $excludedEmails);
+        $sql = $this->sqlHelper->buildSql($mailMask, $passwordHash);
+        $sql = $this->sqlHelper->appendSqlWhereClause($sql, $excludedEmails);
 
         $result = $connection->query($sql);
 
@@ -118,56 +133,9 @@ class PasswordNormalizer extends AbstractMagentoCommand
     }
 
     /**
-     * Construct manual DB query, because Magento2 is stupid and doesn't have good iterator or bulk-actions
-     *
-     * @param string $mailMask
-     * @param string $passwordHash
-     * @return string
-     */
-    public function buildSql(string $mailMask, string $passwordHash): string
-    {
-        // convert the email-mask input to SQL
-        $mailMask = str_replace(
-            self::ID_PLACEHOLDER,
-            "',entity_id,'",
-            $mailMask
-        );
-
-        $sql = sprintf(
-            "UPDATE customer_entity SET email = CONCAT('%s'), password_hash = '%s'",
-            $mailMask,
-            $passwordHash
-        );
-
-        return $sql;
-    }
-
-    /**
-     * Appends the where clauses to the SQL based on the $excludedEmails
-     *
-     * @param string $sql
-     * @param string $excludedEmails
-     * @return string
-     */
-    public function appendSqlWhereClause(string $sql, string $excludedEmails = null): string
-    {
-        if (isset($excludedEmails) && !empty($excludedEmails)) {
-            $excludedEmailsArr = explode(';', $excludedEmails);
-            $concated = implode("' AND email NOT LIKE '", $excludedEmailsArr);
-            $sql = sprintf(
-                "%s WHERE email NOT LIKE '%s'",
-                $sql,
-                $concated
-            );
-        }
-
-        return $sql;
-    }
-
-    /**
      * Refreshes the customer_grid
      */
-    public function updateCustomerGrid(): void
+    private function updateCustomerGrid(): void
     {
         $indexer = $this->getIndexer();
         $indexer->load(Customer::CUSTOMER_GRID_INDEXER_ID);
