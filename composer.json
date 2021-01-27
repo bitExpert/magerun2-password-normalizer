@@ -26,7 +26,7 @@
     "magento/framework": "102.0.6|103.0.0|103.0.1",
     "magento/module-customer": "102.0.6|103.0.0|103.0.1",
     "magento/module-indexer" : "100.3.6|100.4.0|100.4.1",
-    "infection/infection": "^0.20.2"
+    "infection/infection": "^0.21.0"
   },
   "require-dev": {
     "n98/magerun2": "^4.0.0",
