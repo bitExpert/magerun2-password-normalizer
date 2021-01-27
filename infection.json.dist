@@ -19,6 +19,16 @@
                 "BitExpert\\Magento\\PasswordNormalizer\\Command\\PasswordNormalizer::getState",
                 "BitExpert\\Magento\\PasswordNormalizer\\Command\\PasswordNormalizer::getIndexer"
             ]
+        },
+        "Concat": {
+            "ignore": [
+                "BitExpert\\Magento\\PasswordNormalizer\\Command\\PasswordNormalizer::configure"
+            ]
+        },
+        "ConcatOperandRemoval": {
+            "ignore": [
+                "BitExpert\\Magento\\PasswordNormalizer\\Command\\PasswordNormalizer::configure"
+            ]
         }
     }
 }
