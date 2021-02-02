@@ -6553,10 +6553,6 @@
                 }
             ],
             "description": "Abstract Test Framework Adapter for Infection",
-            "support": {
-                "issues": "https://github.com/infection/abstract-testframework-adapter/issues",
-                "source": "https://github.com/infection/abstract-testframework-adapter/tree/0.3"
-            },
             "time": "2020-08-30T13:50:12+00:00"
         },
         {
@@ -6609,10 +6605,6 @@
                 }
             ],
             "description": "Infection Extension Installer",
-            "support": {
-                "issues": "https://github.com/infection/extension-installer/issues",
-                "source": "https://github.com/infection/extension-installer/tree/0.1.1"
-            },
             "time": "2020-04-25T22:40:05+00:00"
         },
         {
@@ -6655,10 +6647,6 @@
                 }
             ],
             "description": "Stream Wrapper: Include Interceptor. Allows to replace included (autoloaded) file with another one.",
-            "support": {
-                "issues": "https://github.com/infection/include-interceptor/issues",
-                "source": "https://github.com/infection/include-interceptor/tree/0.2.4"
-            },
             "time": "2020-08-07T22:40:37+00:00"
         },
         {
@@ -6770,10 +6758,6 @@
                 "testing",
                 "unit testing"
             ],
-            "support": {
-                "issues": "https://github.com/infection/infection/issues",
-                "source": "https://github.com/infection/infection/tree/0.21.0"
-            },
             "funding": [
                 {
                     "url": "https://github.com/infection",
@@ -7199,10 +7183,6 @@
                 "teamcity",
                 "travis"
             ],
-            "support": {
-                "issues": "https://github.com/OndraM/ci-detector/issues",
-                "source": "https://github.com/OndraM/ci-detector/tree/main"
-            },
             "time": "2020-09-04T11:21:14+00:00"
         },
         {
@@ -7604,16 +7584,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.70",
+            "version": "0.12.71",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "07f0ef37f5f876e8cee44cc8ea0ec3fe80d499ee"
+                "reference": "d508fa3b0ecc5fc91ac70c6c7ac2862f968ba2b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/07f0ef37f5f876e8cee44cc8ea0ec3fe80d499ee",
-                "reference": "07f0ef37f5f876e8cee44cc8ea0ec3fe80d499ee",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d508fa3b0ecc5fc91ac70c6c7ac2862f968ba2b5",
+                "reference": "d508fa3b0ecc5fc91ac70c6c7ac2862f968ba2b5",
                 "shasum": ""
             },
             "require": {
@@ -7642,10 +7622,6 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "support": {
-                "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/0.12.70"
-            },
             "funding": [
                 {
                     "url": "https://github.com/ondrejmirtes",
@@ -7660,7 +7636,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-27T17:06:47+00:00"
+            "time": "2021-02-01T18:24:00+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -8137,12 +8113,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "db043e108edc5065662fec040aedea5bf30f8a12"
+                "reference": "7263d7d73a4de68760e05f3eda5eee73b59f0f6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/db043e108edc5065662fec040aedea5bf30f8a12",
-                "reference": "db043e108edc5065662fec040aedea5bf30f8a12",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/7263d7d73a4de68760e05f3eda5eee73b59f0f6d",
+                "reference": "7263d7d73a4de68760e05f3eda5eee73b59f0f6d",
                 "shasum": ""
             },
             "conflict": {
@@ -8208,6 +8184,8 @@
                 "ezsystems/repository-forms": ">=2.3,<2.3.2.1",
                 "ezyang/htmlpurifier": "<4.1.1",
                 "firebase/php-jwt": "<2",
+                "flarum/sticky": ">=0.1-beta.14,<=0.1-beta.15",
+                "flarum/tags": "<=0.1-beta.13",
                 "fooman/tcpdf": "<6.2.22",
                 "fossar/tcpdf-parser": "<6.2.22",
                 "friendsofsymfony/oauth2-php": "<1.3",
@@ -8323,6 +8301,7 @@
                 "slim/slim": "<2.6",
                 "smarty/smarty": "<3.1.33",
                 "socalnick/scn-social-auth": "<1.15.2",
+                "socialiteproviders/steam": "<1.1",
                 "spoonity/tcpdf": "<6.2.22",
                 "squizlabs/php_codesniffer": ">=1,<2.8.1|>=3,<3.0.1",
                 "ssddanbrown/bookstack": "<0.29.2",
@@ -8447,7 +8426,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-20T22:18:29+00:00"
+            "time": "2021-01-29T18:18:11+00:00"
         },
         {
             "name": "sanmai/later",
@@ -8495,10 +8474,6 @@
                 }
             ],
             "description": "Later: deferred wrapper object",
-            "support": {
-                "issues": "https://github.com/sanmai/later/issues",
-                "source": "https://github.com/sanmai/later/tree/0.1.2"
-            },
             "funding": [
                 {
                     "url": "https://github.com/sanmai",
@@ -8560,10 +8535,6 @@
                 }
             ],
             "description": "General-purpose collections pipeline",
-            "support": {
-                "issues": "https://github.com/sanmai/pipeline/issues",
-                "source": "https://github.com/sanmai/pipeline/tree/v5.1.0"
-            },
             "funding": [
                 {
                     "url": "https://github.com/sanmai",
@@ -10302,10 +10273,6 @@
                 "MIT"
             ],
             "description": "PHP core functions that throw exceptions instead of returning FALSE on error",
-            "support": {
-                "issues": "https://github.com/thecodingmachine/safe/issues",
-                "source": "https://github.com/thecodingmachine/safe/tree/v1.3.3"
-            },
             "time": "2020-10-28T17:51:34+00:00"
         },
         {
@@ -10522,10 +10489,6 @@
                 }
             ],
             "description": "A robust cross-platform utility for normalizing, comparing and modifying file paths.",
-            "support": {
-                "issues": "https://github.com/webmozart/path-util/issues",
-                "source": "https://github.com/webmozart/path-util/tree/2.3.0"
-            },
             "time": "2015-12-17T08:42:14+00:00"
         }
     ],
