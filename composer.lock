@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bdc259d9a03943a5479ca0d10e7290f6",
+    "content-hash": "d0c81e9096047fa3caa336781a3465f2",
     "packages": [
         {
             "name": "colinmollenhour/credis",
@@ -6132,16 +6132,16 @@
         },
         {
             "name": "bitexpert/captainhook-infection",
-            "version": "v0.1.0",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bitExpert/captainhook-infection.git",
-                "reference": "08469ffe0298df7c35e53ded40cf7c384b869bf9"
+                "reference": "93b2ea1a64c606e9cabaf0795fc3628da976078d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bitExpert/captainhook-infection/zipball/08469ffe0298df7c35e53ded40cf7c384b869bf9",
-                "reference": "08469ffe0298df7c35e53ded40cf7c384b869bf9",
+                "url": "https://api.github.com/repos/bitExpert/captainhook-infection/zipball/93b2ea1a64c606e9cabaf0795fc3628da976078d",
+                "reference": "93b2ea1a64c606e9cabaf0795fc3628da976078d",
                 "shasum": ""
             },
             "require": {
@@ -6175,7 +6175,7 @@
                 }
             ],
             "description": "Captain Hook Plugin to run InfectionPHP only against the files of the current changeset",
-            "time": "2021-01-30T15:35:39+00:00"
+            "time": "2021-02-02T09:37:51+00:00"
         },
         {
             "name": "bitexpert/phpstan-magento",
