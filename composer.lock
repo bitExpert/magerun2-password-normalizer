@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e027206a6d78d40777542e5d136d4c60",
+    "content-hash": "eb1a32105aad449c56eac4902311774a",
     "packages": [
         {
             "name": "colinmollenhour/credis",
@@ -3104,10 +3104,10 @@
         },
         {
             "name": "magento/module-customer",
-            "version": "103.0.1",
+            "version": "103.0.2",
             "dist": {
                 "type": "zip",
-                "url": "https://repo-magento-mirror.fooman.co.nz/dist/magento/module-customer/magento-module-customer-103.0.1.zip"
+                "url": "https://repo-magento-mirror.fooman.co.nz/dist/magento/module-customer/magento-module-customer-103.0.2.zip"
             },
             "require": {
                 "magento/framework": "103.0.*",
@@ -3133,7 +3133,8 @@
             },
             "suggest": {
                 "magento/module-cookie": "100.4.*",
-                "magento/module-customer-sample-data": "Sample Data version: 100.4.*"
+                "magento/module-customer-sample-data": "Sample Data version: 100.4.*",
+                "magento/module-webapi": "100.4.*"
             },
             "type": "magento2-module",
             "autoload": {
