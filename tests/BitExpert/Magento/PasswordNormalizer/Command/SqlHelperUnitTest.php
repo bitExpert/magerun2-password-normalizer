@@ -44,7 +44,7 @@ class SqlHelperUnitTest extends TestCase
     /**
      * @test
      */
-    public function buildSqlWithMailMaskAndPasswordHash()
+    public function buildSqlWithMailMaskAndPasswordHash(): void
     {
         $mailMask = 'c_' . SqlHelper::ID_PLACEHOLDER . '@example.com';
         $passwordHash = '12345';
@@ -58,19 +58,7 @@ class SqlHelperUnitTest extends TestCase
     /**
      * @test
      */
-    public function appendSqlWhereClauseWithNoExclusions()
-    {
-        $expected = 'SELECT * FROM my_awesome_table';
-
-        $actual = $this->sqlHelper->appendSqlWhereClause($expected, null);
-
-        self::assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function appendSqlWhereClauseWithEmptyString()
+    public function appendSqlWhereClauseWithEmptyString(): void
     {
         $expected = 'SELECT * FROM my_awesome_table';
 
@@ -82,7 +70,7 @@ class SqlHelperUnitTest extends TestCase
     /**
      * @test
      */
-    public function appendSqlWhereClauseWithOneEmail()
+    public function appendSqlWhereClauseWithOneEmail(): void
     {
         $exampleSql = 'SELECT * FROM my_awesome_table';
         $mails = 'foo@example.com';
@@ -96,7 +84,7 @@ class SqlHelperUnitTest extends TestCase
     /**
      * @test
      */
-    public function appendSqlWhereClauseWithTwoEmail()
+    public function appendSqlWhereClauseWithTwoEmail(): void
     {
         $exampleSql = 'SELECT * FROM my_awesome_table';
         $mails = 'foo@example.com;bar@example.com';
