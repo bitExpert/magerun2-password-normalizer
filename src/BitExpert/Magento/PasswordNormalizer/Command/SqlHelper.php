@@ -47,9 +47,9 @@ class SqlHelper
      * @param string $excludedEmails
      * @return string
      */
-    public function appendSqlWhereClause(string $sql, string $excludedEmails = null): string
+    public function appendSqlWhereClause(string $sql, string $excludedEmails = ''): string
     {
-        if (isset($excludedEmails) && !empty($excludedEmails)) {
+        if ($excludedEmails !== '') {
             $excludedEmailsArr = explode(';', $excludedEmails);
             $concated = implode("' AND email NOT LIKE '", $excludedEmailsArr);
             $sql = sprintf(

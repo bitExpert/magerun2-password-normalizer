@@ -19,6 +19,8 @@ use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Indexer\Model\Indexer;
 use N98\Magento\Application;
+use PHPUnit\Framework\Constraint\Callback;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,11 +29,11 @@ use Zend_Db_Statement_Interface;
 class PasswordNormalizerUnitTest extends TestCase
 {
     /**
-     * @var InputInterface
+     * @var MockObject&InputInterface
      */
     private $input;
     /**
-     * @var OutputInterface
+     * @var MockObject&OutputInterface
      */
     private $output;
     /**
@@ -39,27 +41,27 @@ class PasswordNormalizerUnitTest extends TestCase
      */
     private $application;
     /**
-     * @var ResourceConnection
+     * @var MockObject&ResourceConnection
      */
     private $resourceConnection;
     /**
-     * @var EncryptorInterface
+     * @var MockObject&EncryptorInterface
      */
     private $encryptor;
     /**
-     * @var Zend_Db_Statement_Interface
+     * @var MockObject&Zend_Db_Statement_Interface
      */
     private $statement;
     /**
-     * @var AdapterInterface
+     * @var MockObject&AdapterInterface
      */
     private $connection;
     /**
-     * @var State
+     * @var MockObject&State
      */
     private $state;
     /**
-     * @var Indexer
+     * @var MockObject&Indexer
      */
     private $indexer;
 
@@ -78,7 +80,7 @@ class PasswordNormalizerUnitTest extends TestCase
         $this->application = new Application();
         $this->application->init([], $this->input, $this->output);
         $this->resourceConnection = $this->createMock(ResourceConnection::class);
-        $this->resourceConnection->expects($this->any())
+        $this->resourceConnection->expects(self::any())
             ->method('getConnection')
             ->willReturn($this->connection);
         $this->encryptor = $this->createMock(EncryptorInterface::class);
@@ -92,20 +94,20 @@ class PasswordNormalizerUnitTest extends TestCase
     {
         $command = $this->getPasswordNormalizerMock();
         $options = $command->getDefinition()->getOptions();
-        $this->assertSame('dev:customer:normalize-passwords', $command->getName());
-        $this->assertSame('Normalizes all customer-email-addresses and passwords', $command->getDescription());
-        $this->assertCount(4, $options);
+        self::assertSame('dev:customer:normalize-passwords', $command->getName());
+        self::assertSame('Normalizes all customer-email-addresses and passwords', $command->getDescription());
+        self::assertCount(4, $options);
     }
 
     /**
      * @test
      */
-    public function commandCannotBeRunInProductionMode()
+    public function commandCannotBeRunInProductionMode(): void
     {
-        self::expectException(LocalizedException::class);
-        self::expectExceptionMessage('This command can only be run in developer mode!');
+        $this->expectException(LocalizedException::class);
+        $this->expectExceptionMessage('This command can only be run in developer mode!');
 
-        $this->state->expects($this->any())
+        $this->state->expects(self::any())
             ->method('getMode')
             ->willReturn(\Magento\Framework\App\State::MODE_PRODUCTION);
 
@@ -118,12 +120,12 @@ class PasswordNormalizerUnitTest extends TestCase
     /**
      * @test
      */
-    public function commandCannotBeRunInDefaultMode()
+    public function commandCannotBeRunInDefaultMode(): void
     {
-        self::expectException(LocalizedException::class);
-        self::expectExceptionMessage('This command can only be run in developer mode!');
+        $this->expectException(LocalizedException::class);
+        $this->expectExceptionMessage('This command can only be run in developer mode!');
 
-        $this->state->expects($this->any())
+        $this->state->expects(self::any())
             ->method('getMode')
             ->willReturn(\Magento\Framework\App\State::MODE_DEFAULT);
 
@@ -136,12 +138,12 @@ class PasswordNormalizerUnitTest extends TestCase
     /**
      * @test
      */
-    public function missingPasswordParameterThrowsException()
+    public function missingPasswordParameterThrowsException(): void
     {
-        self::expectException(LocalizedException::class);
-        self::expectExceptionMessage('--password is a required option');
+        $this->expectException(LocalizedException::class);
+        $this->expectExceptionMessage('--password is a required option');
 
-        $this->state->expects($this->any())
+        $this->state->expects(self::any())
             ->method('getMode')
             ->willReturn(\Magento\Framework\App\State::MODE_DEVELOPER);
 
@@ -154,12 +156,12 @@ class PasswordNormalizerUnitTest extends TestCase
     /**
      * @test
      */
-    public function emailMaskMissingPlaceholderThrowsException()
+    public function emailMaskMissingPlaceholderThrowsException(): void
     {
-        self::expectException(LocalizedException::class);
-        self::expectExceptionMessage('--email-mask must contain (ID)');
+        $this->expectException(LocalizedException::class);
+        $this->expectExceptionMessage('--email-mask must contain (ID)');
 
-        $this->input->expects($this->any())
+        $this->input->expects(self::any())
             ->method('getOption')
             ->willReturnMap([
                 [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
@@ -167,7 +169,7 @@ class PasswordNormalizerUnitTest extends TestCase
                 [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
             ]);
 
-        $this->state->expects($this->any())
+        $this->state->expects(self::any())
             ->method('getMode')
             ->willReturn(\Magento\Framework\App\State::MODE_DEVELOPER);
 
@@ -181,9 +183,9 @@ class PasswordNormalizerUnitTest extends TestCase
     /**
      * @test
      */
-    public function passingRequiredPasswordParameterSucceeds()
+    public function passingRequiredPasswordParameterSucceeds(): void
     {
-        $this->input->expects($this->any())
+        $this->input->expects(self::any())
             ->method('getOption')
             ->willReturnMap([
                 [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
@@ -191,24 +193,24 @@ class PasswordNormalizerUnitTest extends TestCase
                 [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
             ]);
 
-        $this->state->expects($this->any())
+        $this->state->expects(self::any())
             ->method('getMode')
             ->willReturn(\Magento\Framework\App\State::MODE_DEVELOPER);
 
-        $this->connection->expects($this->any())
+        $this->connection->expects(self::any())
             ->method('query')
             ->willReturn($this->statement);
 
-        $this->encryptor->expects($this->any())
+        $this->encryptor->expects(self::any())
             ->method('getHash')
             ->willReturn('abcdef');
 
         // when everything is working fine, writeln() will be the last operation of the command. Thus, if the method
         // is called we can assume that the execution went well.
-        $this->output->expects($this->exactly(3))
+        $this->output->expects(self::exactly(3))
             ->method('writeln');
 
-        $this->indexer->expects($this->once())
+        $this->indexer->expects(self::once())
             ->method('reindexAll');
 
         /** @var PasswordNormalizer $command */
@@ -220,9 +222,9 @@ class PasswordNormalizerUnitTest extends TestCase
     /**
      * @test
      */
-    public function withAllRequiredOptionsProvidedTheSqlUpdateIsIssued()
+    public function withAllRequiredOptionsProvidedTheSqlUpdateIsIssued(): void
     {
-        $this->input->expects($this->any())
+        $this->input->expects(self::any())
             ->method('getOption')
             ->willReturnMap([
                 [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
@@ -230,22 +232,22 @@ class PasswordNormalizerUnitTest extends TestCase
                 [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
             ]);
 
-        $this->state->expects($this->any())
+        $this->state->expects(self::any())
             ->method('getMode')
             ->willReturn(\Magento\Framework\App\State::MODE_DEVELOPER);
 
-        $this->encryptor->expects($this->once())
+        $this->encryptor->expects(self::once())
             ->method('getHash')
             ->with(
-                $this->equalTo('random-password-to-set'),
-                $this->equalTo(true)
+                self::equalTo('random-password-to-set'),
+                self::equalTo(true)
             )
             ->willReturn('encrypted-random-password');
 
-        $this->connection->expects($this->once())
+        $this->connection->expects(self::once())
             ->method('query')
             ->with(
-                $this->callback(function ($sql) {
+                self::callback(function ($sql): bool {
                     return strpos($sql, 'encrypted-random-password') > 0;
                 })
             )
@@ -260,11 +262,11 @@ class PasswordNormalizerUnitTest extends TestCase
     /**
      * @test
      */
-    public function passingEmailMaskWithoutPlaceholderThrowsException()
+    public function passingEmailMaskWithoutPlaceholderThrowsException(): void
     {
-        self::expectException(LocalizedException::class);
+        $this->expectException(LocalizedException::class);
 
-        $this->input->expects($this->any())
+        $this->input->expects(self::any())
             ->method('getOption')
             ->willReturnMap([
                 [PasswordNormalizer::OPTION_PASSWORD, ''],
@@ -272,7 +274,7 @@ class PasswordNormalizerUnitTest extends TestCase
                 [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
             ]);
 
-        $this->state->expects($this->any())
+        $this->state->expects(self::any())
             ->method('getMode')
             ->willReturn(\Magento\Framework\App\State::MODE_DEVELOPER);
 
@@ -285,9 +287,9 @@ class PasswordNormalizerUnitTest extends TestCase
     /**
      * @test
      */
-    public function withAllRequiredOptionsAndEmailMaskProvidedTheSqlUpdateIsIssued()
+    public function withAllRequiredOptionsAndEmailMaskProvidedTheSqlUpdateIsIssued(): void
     {
-        $this->input->expects($this->any())
+        $this->input->expects(self::any())
             ->method('getOption')
             ->willReturnMap([
                 [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
@@ -295,34 +297,34 @@ class PasswordNormalizerUnitTest extends TestCase
                 [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, 'bitexpert.de'],
             ]);
 
-        $this->state->expects($this->any())
+        $this->state->expects(self::any())
             ->method('getMode')
             ->willReturn(\Magento\Framework\App\State::MODE_DEVELOPER);
 
-        $this->encryptor->expects($this->once())
+        $this->encryptor->expects(self::once())
             ->method('getHash')
             ->with(
-                $this->equalTo('random-password-to-set'),
-                $this->equalTo(true)
+                self::equalTo('random-password-to-set'),
+                self::equalTo(true)
             )
             ->willReturn('encrypted-random-password');
 
-        $this->connection->expects($this->once())
+        $this->connection->expects(self::once())
             ->method('query')
             ->with(
-                $this->callback(function ($sql) {
+                self::callback(function ($sql): bool {
                     return strpos($sql, 'encrypted-random-password') > 0 && strpos($sql, 'bitexpert.de') > 0;
                 })
             )
             ->willReturn($this->statement);
 
-        $this->indexer->expects($this->once())
+        $this->indexer->expects(self::once())
             ->method('load')
             ->with(
-                $this->equalTo(Customer::CUSTOMER_GRID_INDEXER_ID)
+                self::equalTo(Customer::CUSTOMER_GRID_INDEXER_ID)
             );
 
-        $this->indexer->expects($this->once())
+        $this->indexer->expects(self::once())
             ->method('reindexAll');
 
         /** @var PasswordNormalizer $command */
@@ -334,9 +336,9 @@ class PasswordNormalizerUnitTest extends TestCase
     /**
      * @test
      */
-    public function passingForceParameterBypassModeCheck()
+    public function passingForceParameterBypassModeCheck(): void
     {
-        $this->input->expects($this->any())
+        $this->input->expects(self::any())
             ->method('getOption')
             ->willReturnMap([
                 [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
@@ -345,28 +347,28 @@ class PasswordNormalizerUnitTest extends TestCase
                 [PasswordNormalizer::OPTION_FORCE, true]
             ]);
 
-        $this->state->expects($this->any())
+        $this->state->expects(self::any())
             ->method('getMode')
             ->willReturn(\Magento\Framework\App\State::MODE_DEVELOPER);
 
-        $this->state->expects($this->never())
+        $this->state->expects(self::never())
             ->method('getMode')
             ->willReturn(\Magento\Framework\App\State::MODE_PRODUCTION);
 
-        $this->connection->expects($this->any())
+        $this->connection->expects(self::any())
             ->method('query')
             ->willReturn($this->statement);
 
-        $this->encryptor->expects($this->any())
+        $this->encryptor->expects(self::any())
             ->method('getHash')
             ->willReturn('abcdef');
 
         // when everything is working fine, writeln() will be the last operation of the command. Thus, if the method
         // is called we can assume that the execution went well.
-        $this->output->expects($this->exactly(3))
+        $this->output->expects(self::exactly(3))
             ->method('writeln');
 
-        $this->indexer->expects($this->once())->method('reindexAll');
+        $this->indexer->expects(self::once())->method('reindexAll');
 
         /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();
@@ -377,17 +379,17 @@ class PasswordNormalizerUnitTest extends TestCase
     /**
      * @test
      */
-    public function missingForceParameterBypassModeCheck()
+    public function missingForceParameterBypassModeCheck(): void
     {
-        self::expectException(LocalizedException::class);
+        $this->expectException(LocalizedException::class);
 
-        $this->input->expects($this->any())
+        $this->input->expects(self::any())
             ->method('getOption')
             ->willReturnMap([
                 [PasswordNormalizer::OPTION_FORCE, false]
             ]);
 
-        $this->state->expects($this->any())
+        $this->state->expects(self::any())
             ->method('getMode')
             ->willReturn(\Magento\Framework\App\State::MODE_PRODUCTION);
 
@@ -401,7 +403,7 @@ class PasswordNormalizerUnitTest extends TestCase
      * Helper method to configure a mocked version of
      * {@link \BitExpert\Magento\PasswordNormalizer\Command\PasswordNormalizer}.
      *
-     * @return PasswordNormalizer|\PHPUnit\Framework\MockObject\MockObject
+     * @return MockObject&PasswordNormalizer
      */
     protected function getPasswordNormalizerMock()
     {

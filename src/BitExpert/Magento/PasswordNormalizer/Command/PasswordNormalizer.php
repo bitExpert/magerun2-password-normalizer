@@ -86,16 +86,16 @@ class PasswordNormalizer extends AbstractMagentoCommand
      *
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @return int|void
+     * @return int
      * @throws LocalizedException
      * @throws \Zend_Db_Statement_Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // check environment
-        $force = $input->getOption(self::OPTION_FORCE);
+        $force = (bool) $input->getOption(self::OPTION_FORCE);
 
-        if (!($force || State::MODE_DEVELOPER == $this->getState()->getMode())) {
+        if (!($force || State::MODE_DEVELOPER === $this->getState()->getMode())) {
             throw new LocalizedException(__('This command can only be run in developer mode!'));
         }
 
@@ -107,11 +107,11 @@ class PasswordNormalizer extends AbstractMagentoCommand
         $mailMask = is_string($mailMask) ? $mailMask : '';
 
         // option validation
-        if (empty($password)) {
+        if ($password === '') {
             throw new LocalizedException(__('--password is a required option'));
         }
 
-        if (!strpos($mailMask, SqlHelper::ID_PLACEHOLDER)) {
+        if (strpos($mailMask, SqlHelper::ID_PLACEHOLDER) === false) {
             throw new LocalizedException(__('--email-mask must contain %1', SqlHelper::ID_PLACEHOLDER));
         }
 
@@ -130,6 +130,8 @@ class PasswordNormalizer extends AbstractMagentoCommand
         $output->writeln('Updating customer grid...');
         $this->updateCustomerGrid();
         $output->writeln('Updating customer grid done.');
+
+        return 0;
     }
 
     /**
@@ -149,6 +151,7 @@ class PasswordNormalizer extends AbstractMagentoCommand
      */
     protected function getResource(): ResourceConnection
     {
+        /** @var ResourceConnection */
         return ObjectManager::getInstance()->get(ResourceConnection::class);
     }
 
@@ -159,6 +162,7 @@ class PasswordNormalizer extends AbstractMagentoCommand
      */
     protected function getEncryptor(): EncryptorInterface
     {
+        /** @var EncryptorInterface */
         return ObjectManager::getInstance()->get(EncryptorInterface::class);
     }
 
@@ -169,6 +173,7 @@ class PasswordNormalizer extends AbstractMagentoCommand
      */
     protected function getState(): State
     {
+        /** @var State */
         return ObjectManager::getInstance()->get(State::class);
     }
 
@@ -179,6 +184,7 @@ class PasswordNormalizer extends AbstractMagentoCommand
      */
     protected function getIndexer(): Indexer
     {
+        /** @var Indexer */
         return ObjectManager::getInstance()->get(Indexer::class);
     }
 }
