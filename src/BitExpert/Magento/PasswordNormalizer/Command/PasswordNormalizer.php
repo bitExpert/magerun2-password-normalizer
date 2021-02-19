@@ -95,7 +95,7 @@ class PasswordNormalizer extends AbstractMagentoCommand
         // check environment
         $force = (bool) $input->getOption(self::OPTION_FORCE);
 
-        if (!($force || State::MODE_DEVELOPER === $this->getState()->getMode())) {
+        if (!($force === true || State::MODE_DEVELOPER === $this->getState()->getMode())) {
             throw new LocalizedException(__('This command can only be run in developer mode!'));
         }
 
