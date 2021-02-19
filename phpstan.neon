@@ -7,7 +7,4 @@ parameters:
         - tests/BitExpert
     bootstrapFiles:
             - vendor/bitexpert/phpstan-magento/autoload.php
-    ignoreErrors:
-        -
-            message: '~Unable to resolve the template type CallbackInput in call to method static method PHPUnit\\Framework\\Assert::callback\(\)~'
-            path: tests/BitExpert/Magento/PasswordNormalizer/Command/PasswordNormalizerUnitTest.php
+
