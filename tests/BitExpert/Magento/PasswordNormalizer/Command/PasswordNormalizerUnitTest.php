@@ -19,7 +19,6 @@ use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Indexer\Model\Indexer;
 use N98\Magento\Application;
-use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputInterface;
@@ -120,6 +119,40 @@ class PasswordNormalizerUnitTest extends TestCase
     /**
      * @test
      */
+    public function commandCanBeRunInProductionModeWithForceMode(): void
+    {
+        $this->input->expects(self::any())
+            ->method('getOption')
+            ->willReturnMap([
+                [PasswordNormalizer::OPTION_FORCE, true],
+                [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
+                [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
+                [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
+            ]);
+
+        $this->state->expects(self::any())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_PRODUCTION);
+
+        $this->connection->expects(self::any())
+            ->method('query')
+            ->willReturn($this->statement);
+
+        $this->encryptor->expects(self::any())
+            ->method('getHash')
+            ->willReturn('abcdef');
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $return = $command->run($this->input, $this->output);
+
+        self::assertSame(0, $return);
+    }
+
+    /**
+     * @test
+     */
     public function commandCannotBeRunInDefaultMode(): void
     {
         $this->expectException(LocalizedException::class);
@@ -133,6 +166,75 @@ class PasswordNormalizerUnitTest extends TestCase
         $command = $this->getPasswordNormalizerMock();
         $command->setApplication($this->application);
         $command->run($this->input, $this->output);
+    }
+
+    /**
+     * @test
+     */
+    public function commandCanBeRunInDefaultModeWithForceMode(): void
+    {
+        $this->input->expects(self::any())
+            ->method('getOption')
+            ->willReturnMap([
+                [PasswordNormalizer::OPTION_FORCE, true],
+                [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
+                [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
+                [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
+            ]);
+
+        $this->state->expects(self::any())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_DEFAULT);
+
+        $this->connection->expects(self::any())
+            ->method('query')
+            ->willReturn($this->statement);
+
+        $this->encryptor->expects(self::any())
+            ->method('getHash')
+            ->willReturn('abcdef');
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $return = $command->run($this->input, $this->output);
+
+        self::assertSame(0, $return);
+    }
+
+
+    /**
+     * @test
+     */
+    public function nonBoolForceModeWillBeCastedToBool(): void
+    {
+        $this->input->expects(self::any())
+            ->method('getOption')
+            ->willReturnMap([
+                [PasswordNormalizer::OPTION_FORCE, "yes"],
+                [PasswordNormalizer::OPTION_PASSWORD, 'random-password-to-set'],
+                [PasswordNormalizer::OPTION_EMAIL_MASK, 'customer_(ID)@example.com'],
+                [PasswordNormalizer::OPTION_EXCLUDE_EMAILS, ''],
+            ]);
+
+        $this->state->expects(self::any())
+            ->method('getMode')
+            ->willReturn(\Magento\Framework\App\State::MODE_PRODUCTION);
+
+        $this->connection->expects(self::any())
+            ->method('query')
+            ->willReturn($this->statement);
+
+        $this->encryptor->expects(self::any())
+            ->method('getHash')
+            ->willReturn('abcdef');
+
+        /** @var PasswordNormalizer $command */
+        $command = $this->getPasswordNormalizerMock();
+        $command->setApplication($this->application);
+        $return = $command->run($this->input, $this->output);
+
+        self::assertSame(0, $return);
     }
 
     /**
@@ -216,7 +318,9 @@ class PasswordNormalizerUnitTest extends TestCase
         /** @var PasswordNormalizer $command */
         $command = $this->getPasswordNormalizerMock();
         $command->setApplication($this->application);
-        $command->run($this->input, $this->output);
+        $return = $command->run($this->input, $this->output);
+
+        self::assertSame(0, $return);
     }
 
     /**
