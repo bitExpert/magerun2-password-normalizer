@@ -54,6 +54,26 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#12](https://github.com/bitExpert/magerun2-password-normalizer/pull/12) Add Phing dependency
 - [#11](https://github.com/bitExpert/magerun2-password-normalizer/pull/11) Update dependencies
 
+## 1.0.4
+
+### Added
+
+- [#10](https://github.com/bitExpert/magerun2-password-normalizer/pull/10) customer_grid is being reindex after changing the customer data
+- [#9](https://github.com/bitExpert/magerun2-password-normalizer/pull/9) allow multiple email exclusions
+- [#8](https://github.com/bitExpert/magerun2-password-normalizer/pull/8) Added --force parameter to bypass check for deploy-mode being developer
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 1.0.0
 
 Initial release of the magerun2 password-normalizer plugin.
