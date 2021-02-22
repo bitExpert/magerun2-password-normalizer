@@ -38,7 +38,7 @@
     "bitexpert/phpstan-magento": "^0.6.0",
     "roave/security-advisories": "dev-latest",
     "infection/infection": "^0.21.0",
-    "bitexpert/captainhook-infection": "^0.3.0",
+    "bitexpert/captainhook-infection": "^0.4.0",
     "phpstan/phpstan-strict-rules": "^0.12.9"
   },
   "repositories": [
