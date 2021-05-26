@@ -5305,16 +5305,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.4.23",
+            "version": "v4.4.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "1ab187ac21d41d7d34a4f529091a1f5d0bb2924f"
+                "reference": "1b15ca1b1bedda86f98064da9ff5d800560d4c6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/1ab187ac21d41d7d34a4f529091a1f5d0bb2924f",
-                "reference": "1ab187ac21d41d7d34a4f529091a1f5d0bb2924f",
+                "url": "https://api.github.com/repos/symfony/console/zipball/1b15ca1b1bedda86f98064da9ff5d800560d4c6d",
+                "reference": "1b15ca1b1bedda86f98064da9ff5d800560d4c6d",
                 "shasum": ""
             },
             "require": {
@@ -5374,7 +5374,7 @@
             "description": "Eases the creation of beautiful and testable command line interfaces",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/console/tree/v4.4.23"
+                "source": "https://github.com/symfony/console/tree/v4.4.24"
             },
             "funding": [
                 {
@@ -5390,7 +5390,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-10T12:53:15+00:00"
+            "time": "2021-05-13T06:28:07+00:00"
         },
         {
             "name": "symfony/filesystem",
@@ -6559,16 +6559,16 @@
         },
         {
             "name": "captainhook/captainhook",
-            "version": "5.10.0",
+            "version": "5.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/captainhookphp/captainhook.git",
-                "reference": "2ee0cc1e356b95b3482be304bb31c68fe72d8ad6"
+                "reference": "03f31d3c6bdec50c831381f27ecad48c73840726"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/captainhookphp/captainhook/zipball/2ee0cc1e356b95b3482be304bb31c68fe72d8ad6",
-                "reference": "2ee0cc1e356b95b3482be304bb31c68fe72d8ad6",
+                "url": "https://api.github.com/repos/captainhookphp/captainhook/zipball/03f31d3c6bdec50c831381f27ecad48c73840726",
+                "reference": "03f31d3c6bdec50c831381f27ecad48c73840726",
                 "shasum": ""
             },
             "require": {
@@ -6630,7 +6630,7 @@
             ],
             "support": {
                 "issues": "https://github.com/captainhookphp/captainhook/issues",
-                "source": "https://github.com/captainhookphp/captainhook/tree/5.10.0"
+                "source": "https://github.com/captainhookphp/captainhook/tree/5.10.1"
             },
             "funding": [
                 {
@@ -6638,20 +6638,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-05-15T12:39:06+00:00"
+            "time": "2021-05-25T21:21:59+00:00"
         },
         {
             "name": "captainhook/plugin-composer",
-            "version": "5.3.0",
+            "version": "5.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/captainhookphp/plugin-composer.git",
-                "reference": "def8812945e0767a45fe0e4db5ed255b7093600a"
+                "reference": "56e889e4a40628a77cc78306b6b05de173fd0284"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/captainhookphp/plugin-composer/zipball/def8812945e0767a45fe0e4db5ed255b7093600a",
-                "reference": "def8812945e0767a45fe0e4db5ed255b7093600a",
+                "url": "https://api.github.com/repos/captainhookphp/plugin-composer/zipball/56e889e4a40628a77cc78306b6b05de173fd0284",
+                "reference": "56e889e4a40628a77cc78306b6b05de173fd0284",
                 "shasum": ""
             },
             "require": {
@@ -6691,9 +6691,9 @@
             "description": "Composer-Plugin handling your git-hooks",
             "support": {
                 "issues": "https://github.com/captainhookphp/plugin-composer/issues",
-                "source": "https://github.com/captainhookphp/plugin-composer/tree/5.3.0"
+                "source": "https://github.com/captainhookphp/plugin-composer/tree/5.3.1"
             },
-            "time": "2021-05-06T15:55:15+00:00"
+            "time": "2021-05-25T21:16:43+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
