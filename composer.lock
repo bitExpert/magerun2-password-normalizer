@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ef01d7dc2e325fc3eace4934119d2d2",
+    "content-hash": "491739dbac3db82155b8933454db7114",
     "packages": [
         {
             "name": "colinmollenhour/credis",
@@ -6450,31 +6450,32 @@
         },
         {
             "name": "bitexpert/captainhook-infection",
-            "version": "v0.4.0",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bitExpert/captainhook-infection.git",
-                "reference": "dee08785259dd85bd3f8403339eb3a1dd67202c1"
+                "reference": "d3d758c21c1ad376044499a425169eaebfa3c507"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bitExpert/captainhook-infection/zipball/dee08785259dd85bd3f8403339eb3a1dd67202c1",
-                "reference": "dee08785259dd85bd3f8403339eb3a1dd67202c1",
+                "url": "https://api.github.com/repos/bitExpert/captainhook-infection/zipball/d3d758c21c1ad376044499a425169eaebfa3c507",
+                "reference": "d3d758c21c1ad376044499a425169eaebfa3c507",
                 "shasum": ""
             },
             "require": {
-                "captainhook/captainhook": "^5.4",
+                "captainhook/captainhook": "^5.10",
                 "php": "^7.4.0|^8.0.0"
             },
             "require-dev": {
-                "captainhook/plugin-composer": "^5.2",
-                "infection/infection": "^0.21.0",
+                "captainhook/plugin-composer": "^5.3.1",
+                "infection/infection": "^0.21.5",
+                "madewithlove/license-checker": "^0.10.0",
                 "phly/keep-a-changelog": "^2.11",
-                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan": "^0.12.88",
                 "phpstan/phpstan-strict-rules": "^0.12.9",
-                "phpunit/phpunit": "^9.5",
+                "phpunit/phpunit": "^9.5.4",
                 "roave/security-advisories": "dev-latest",
-                "squizlabs/php_codesniffer": "^3.5"
+                "squizlabs/php_codesniffer": "^3.6"
             },
             "type": "library",
             "autoload": {
@@ -6496,9 +6497,9 @@
             "description": "Captain Hook Plugin to run InfectionPHP only against the files of the current changeset",
             "support": {
                 "issues": "https://github.com/bitExpert/captainhook-infection/issues",
-                "source": "https://github.com/bitExpert/captainhook-infection/tree/v0.4.0"
+                "source": "https://github.com/bitExpert/captainhook-infection/tree/v0.5.0"
             },
-            "time": "2021-02-20T08:59:39+00:00"
+            "time": "2021-05-29T08:27:37+00:00"
         },
         {
             "name": "bitexpert/phpstan-magento",
@@ -10077,16 +10078,16 @@
         },
         {
             "name": "sebastianfeldmann/cli",
-            "version": "3.3.1",
+            "version": "3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianfeldmann/cli.git",
-                "reference": "490a6ba01d62e56d597b4d3377024feb87871f6f"
+                "reference": "c4a677f229976c88cc8f50b1477ab15244a4f6d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianfeldmann/cli/zipball/490a6ba01d62e56d597b4d3377024feb87871f6f",
-                "reference": "490a6ba01d62e56d597b4d3377024feb87871f6f",
+                "url": "https://api.github.com/repos/sebastianfeldmann/cli/zipball/c4a677f229976c88cc8f50b1477ab15244a4f6d8",
+                "reference": "c4a677f229976c88cc8f50b1477ab15244a4f6d8",
                 "shasum": ""
             },
             "require": {
@@ -10123,7 +10124,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianfeldmann/cli/issues",
-                "source": "https://github.com/sebastianfeldmann/cli/tree/3.3.1"
+                "source": "https://github.com/sebastianfeldmann/cli/tree/3.3.3"
             },
             "funding": [
                 {
@@ -10131,20 +10132,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-12-08T09:20:06+00:00"
+            "time": "2021-06-03T16:02:45+00:00"
         },
         {
             "name": "sebastianfeldmann/git",
-            "version": "3.7.0",
+            "version": "3.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianfeldmann/git.git",
-                "reference": "ca827dc741a90043ee46e59a96b1ca88b9ed5264"
+                "reference": "406b98e09c37249ce586be8ed5766bf0ca389490"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianfeldmann/git/zipball/ca827dc741a90043ee46e59a96b1ca88b9ed5264",
-                "reference": "ca827dc741a90043ee46e59a96b1ca88b9ed5264",
+                "url": "https://api.github.com/repos/sebastianfeldmann/git/zipball/406b98e09c37249ce586be8ed5766bf0ca389490",
+                "reference": "406b98e09c37249ce586be8ed5766bf0ca389490",
                 "shasum": ""
             },
             "require": {
@@ -10181,7 +10182,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianfeldmann/git/issues",
-                "source": "https://github.com/sebastianfeldmann/git/tree/3.7.0"
+                "source": "https://github.com/sebastianfeldmann/git/tree/3.7.1"
             },
             "funding": [
                 {
@@ -10189,7 +10190,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-04-10T08:31:02+00:00"
+            "time": "2021-05-29T12:47:08+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
