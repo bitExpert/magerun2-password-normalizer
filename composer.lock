@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "491739dbac3db82155b8933454db7114",
+    "content-hash": "ec7c48544db623404a0d07fbf10bcf7e",
     "packages": [
         {
             "name": "colinmollenhour/credis",
@@ -6503,28 +6503,31 @@
         },
         {
             "name": "bitexpert/phpstan-magento",
-            "version": "v0.8.0",
+            "version": "v0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bitExpert/phpstan-magento.git",
-                "reference": "3f2f51f12037432d235430cd691205d377aba19f"
+                "reference": "8d56fd0b9635d6c8737bde60101851b0c811ee4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bitExpert/phpstan-magento/zipball/3f2f51f12037432d235430cd691205d377aba19f",
-                "reference": "3f2f51f12037432d235430cd691205d377aba19f",
+                "url": "https://api.github.com/repos/bitExpert/phpstan-magento/zipball/8d56fd0b9635d6c8737bde60101851b0c811ee4c",
+                "reference": "8d56fd0b9635d6c8737bde60101851b0c811ee4c",
                 "shasum": ""
             },
             "require": {
-                "magento/framework": ">=101.0.0",
                 "nette/neon": "^3.1",
                 "php": "^7.2.0",
                 "phpstan/phpstan": "^0.12.23"
+            },
+            "conflict": {
+                "magento/framework": "<101.0.0"
             },
             "require-dev": {
                 "captainhook/captainhook": "^5.10.1",
                 "captainhook/plugin-composer": "^5.3.1",
                 "madewithlove/license-checker": "^0.10.0",
+                "magento/framework": ">=101.0.0",
                 "mikey179/vfsstream": "^1.6.8",
                 "nikic/php-parser": "^4.10.5",
                 "phpstan/extension-installer": "^1.1.0",
@@ -6561,9 +6564,9 @@
             "description": "PHPStan Magento Extension",
             "support": {
                 "issues": "https://github.com/bitExpert/phpstan-magento/issues",
-                "source": "https://github.com/bitExpert/phpstan-magento/tree/v0.8.0"
+                "source": "https://github.com/bitExpert/phpstan-magento/tree/v0.9.0"
             },
-            "time": "2021-06-18T20:06:39+00:00"
+            "time": "2021-08-07T08:00:32+00:00"
         },
         {
             "name": "captainhook/captainhook",
