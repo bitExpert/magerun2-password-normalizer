@@ -25,7 +25,7 @@
     "php": "^7.4",
     "magento/framework": "102.0.6|103.0.0|103.0.1|103.0.2",
     "magento/module-customer": "102.0.6|103.0.0|103.0.1|103.0.2",
-    "magento/module-indexer" : "100.3.6|100.4.0|100.4.1|100.4.2"
+    "magento/module-indexer" : "^100.4.3"
   },
   "require-dev": {
     "n98/magerun2": "^4.0.0",
