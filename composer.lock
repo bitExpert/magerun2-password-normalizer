@@ -5826,16 +5826,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.4.29",
+            "version": "v4.4.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "8baf0bbcfddfde7d7225ae8e04705cfd1081cd7b"
+                "reference": "a3f7189a0665ee33b50e9e228c46f50f5acbed22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/8baf0bbcfddfde7d7225ae8e04705cfd1081cd7b",
-                "reference": "8baf0bbcfddfde7d7225ae8e04705cfd1081cd7b",
+                "url": "https://api.github.com/repos/symfony/console/zipball/a3f7189a0665ee33b50e9e228c46f50f5acbed22",
+                "reference": "a3f7189a0665ee33b50e9e228c46f50f5acbed22",
                 "shasum": ""
             },
             "require": {
@@ -5896,7 +5896,7 @@
             "description": "Eases the creation of beautiful and testable command line interfaces",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/console/tree/v4.4.29"
+                "source": "https://github.com/symfony/console/tree/v4.4.30"
             },
             "funding": [
                 {
@@ -5912,7 +5912,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-27T19:04:53+00:00"
+            "time": "2021-08-25T19:27:26+00:00"
         },
         {
             "name": "symfony/debug",
@@ -7397,16 +7397,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.4.27",
+            "version": "v4.4.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "0b7dc5599ac4aa6d7b936c8f7d10abae64f6cf7f"
+                "reference": "13d3161ef63a8ec21eeccaaf9a4d7f784a87a97d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/0b7dc5599ac4aa6d7b936c8f7d10abae64f6cf7f",
-                "reference": "0b7dc5599ac4aa6d7b936c8f7d10abae64f6cf7f",
+                "url": "https://api.github.com/repos/symfony/process/zipball/13d3161ef63a8ec21eeccaaf9a4d7f784a87a97d",
+                "reference": "13d3161ef63a8ec21eeccaaf9a4d7f784a87a97d",
                 "shasum": ""
             },
             "require": {
@@ -7439,7 +7439,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v4.4.27"
+                "source": "https://github.com/symfony/process/tree/v4.4.30"
             },
             "funding": [
                 {
@@ -7455,7 +7455,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-23T15:41:52+00:00"
+            "time": "2021-08-04T20:31:23+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -8351,16 +8351,16 @@
         },
         {
             "name": "captainhook/captainhook",
-            "version": "5.10.1",
+            "version": "5.10.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/captainhookphp/captainhook.git",
-                "reference": "03f31d3c6bdec50c831381f27ecad48c73840726"
+                "reference": "b21e414a173538ffcb621e06347fe49280d94adf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/captainhookphp/captainhook/zipball/03f31d3c6bdec50c831381f27ecad48c73840726",
-                "reference": "03f31d3c6bdec50c831381f27ecad48c73840726",
+                "url": "https://api.github.com/repos/captainhookphp/captainhook/zipball/b21e414a173538ffcb621e06347fe49280d94adf",
+                "reference": "b21e414a173538ffcb621e06347fe49280d94adf",
                 "shasum": ""
             },
             "require": {
@@ -8422,7 +8422,7 @@
             ],
             "support": {
                 "issues": "https://github.com/captainhookphp/captainhook/issues",
-                "source": "https://github.com/captainhookphp/captainhook/tree/5.10.1"
+                "source": "https://github.com/captainhookphp/captainhook/tree/5.10.2"
             },
             "funding": [
                 {
@@ -8430,7 +8430,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-05-25T21:21:59+00:00"
+            "time": "2021-09-03T18:02:32+00:00"
         },
         {
             "name": "captainhook/plugin-composer",
@@ -11863,16 +11863,16 @@
         },
         {
             "name": "sebastianfeldmann/git",
-            "version": "3.7.1",
+            "version": "3.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianfeldmann/git.git",
-                "reference": "406b98e09c37249ce586be8ed5766bf0ca389490"
+                "reference": "ccaa6211cc613c1c631120e70b20f29be30c5fd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianfeldmann/git/zipball/406b98e09c37249ce586be8ed5766bf0ca389490",
-                "reference": "406b98e09c37249ce586be8ed5766bf0ca389490",
+                "url": "https://api.github.com/repos/sebastianfeldmann/git/zipball/ccaa6211cc613c1c631120e70b20f29be30c5fd4",
+                "reference": "ccaa6211cc613c1c631120e70b20f29be30c5fd4",
                 "shasum": ""
             },
             "require": {
@@ -11909,7 +11909,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianfeldmann/git/issues",
-                "source": "https://github.com/sebastianfeldmann/git/tree/3.7.1"
+                "source": "https://github.com/sebastianfeldmann/git/tree/3.7.2"
             },
             "funding": [
                 {
@@ -11917,7 +11917,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-05-29T12:47:08+00:00"
+            "time": "2021-07-29T16:13:52+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
