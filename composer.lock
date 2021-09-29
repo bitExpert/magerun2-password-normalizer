@@ -5916,16 +5916,16 @@
         },
         {
             "name": "symfony/debug",
-            "version": "v4.4.27",
+            "version": "v4.4.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "2f9160e92eb64c95da7368c867b663a8e34e980c"
+                "reference": "43ede438d4cb52cd589ae5dc070e9323866ba8e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/2f9160e92eb64c95da7368c867b663a8e34e980c",
-                "reference": "2f9160e92eb64c95da7368c867b663a8e34e980c",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/43ede438d4cb52cd589ae5dc070e9323866ba8e0",
+                "reference": "43ede438d4cb52cd589ae5dc070e9323866ba8e0",
                 "shasum": ""
             },
             "require": {
@@ -5964,7 +5964,7 @@
             "description": "Provides tools to ease debugging PHP code",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/debug/tree/v4.4.27"
+                "source": "https://github.com/symfony/debug/tree/v4.4.31"
             },
             "funding": [
                 {
@@ -5980,7 +5980,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-22T07:21:39+00:00"
+            "time": "2021-09-24T13:30:14+00:00"
         },
         {
             "name": "symfony/dependency-injection",
@@ -8351,16 +8351,16 @@
         },
         {
             "name": "captainhook/captainhook",
-            "version": "5.10.3",
+            "version": "5.10.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/captainhookphp/captainhook.git",
-                "reference": "af5d34d529434063aee4e7e96308dfe2918717f9"
+                "reference": "4cf2f8afda36e1f08f4f04985355e1f5126ea9a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/captainhookphp/captainhook/zipball/af5d34d529434063aee4e7e96308dfe2918717f9",
-                "reference": "af5d34d529434063aee4e7e96308dfe2918717f9",
+                "url": "https://api.github.com/repos/captainhookphp/captainhook/zipball/4cf2f8afda36e1f08f4f04985355e1f5126ea9a1",
+                "reference": "4cf2f8afda36e1f08f4f04985355e1f5126ea9a1",
                 "shasum": ""
             },
             "require": {
@@ -8422,7 +8422,7 @@
             ],
             "support": {
                 "issues": "https://github.com/captainhookphp/captainhook/issues",
-                "source": "https://github.com/captainhookphp/captainhook/tree/5.10.3"
+                "source": "https://github.com/captainhookphp/captainhook/tree/5.10.4"
             },
             "funding": [
                 {
@@ -8430,7 +8430,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-09-22T12:23:02+00:00"
+            "time": "2021-09-28T15:12:04+00:00"
         },
         {
             "name": "captainhook/plugin-composer",
