@@ -8,6 +8,7 @@
   "prefer-stable": true,
   "homepage": "https://github.com/bitexpert/magerun2-password-normalizer",
   "license": "Apache-2.0",
+  "abandoned": "hivecommerce/magento2-content-fuzzyfyr",
   "authors": [
     {
       "name": "Philipp Sander",

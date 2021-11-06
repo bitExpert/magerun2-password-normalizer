@@ -1,3 +1,7 @@
+> ## Repository abandoned 2021-11-06
+>
+> This package is abandoned. Use [hivecommerce/magento2-content-fuzzyfyr](https://github.com/hivecommerce/magento2-content-fuzzyfyr) instead!
+
 # magerun2-password-normalizer
 
 [netz98 Magerun2](https://github.com/netz98/n98-magerun2) Plugin for changing the passwords and email-addresses for customer-accounts in bulk.
